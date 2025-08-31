@@ -1,5 +1,5 @@
 // API_URL will be set by config.js
-let API_URL = window.API_CONFIG?.API_URL || 'http://localhost:9000/api' || 'https://astro-backend-ftri.onrender.com';
+let API_URL = 'https://astrologer-platfrom.onrender.com';
 let currentUser = null;
 let earningsChart = null;
 let serviceChart = null;
