@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Astrologer Platform</title>
+    <script src="js/config.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🧪 API Connectivity Test</h1>
+    <div id="results"></div>
+    <button onclick="testAPI()">Test API Connection</button>
+
+    <script>
+        async function testAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="info">Testing API connection...</div>';
+
+            try {
+                // Test 1: Environment Detection
+                const env = window.API_CONFIG.isDevelopment ? 'Development' : 'Production';
+                const apiUrl = window.API_CONFIG.API_URL;
+                
+                resultsDiv.innerHTML += `
+                    <div class="test-result success">
+                        ✅ Environment: ${env}<br>
+                        ✅ API URL: ${apiUrl}
+                    </div>
+                `;
+
+                // Test 2: Health Check
+                const response = await fetch(`${apiUrl}/health`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultsDiv.innerHTML += `
+                        <div class="test-result success">
+                            ✅ Health Check: ${data.message}<br>
+                            ✅ Server Time: ${data.timestamp}<br>
+                            ✅ Environment: ${data.environment}
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                // Test 3: CORS Check
+                resultsDiv.innerHTML += `
+                    <div class="test-result success">
+                        ✅ CORS: Working properly
+                    </div>
+                `;
+
+                resultsDiv.innerHTML += `
+                    <div class="test-result success">
+                        🎉 All tests passed! Your API is ready for production.
+                    </div>
+                `;
+
+            } catch (error) {
+                resultsDiv.innerHTML += `
+                    <div class="test-result error">
+                        ❌ API Test Failed: ${error.message}<br>
+                        🔧 Check if your backend is running at: ${window.API_CONFIG.API_URL}
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-run test when page loads
+        window.onload = testAPI;
+    </script>
+</body>
+</html>

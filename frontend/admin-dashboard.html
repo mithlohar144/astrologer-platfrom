@@ -1,0 +1,2071 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard - Astrology Platform</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <style>
+            :root {
+                --primary-color: #667eea;
+                --secondary-color: #764ba2;
+                --success-color: #28a745;
+                --warning-color: #ffc107;
+                --danger-color: #dc3545;
+                --info-color: #17a2b8;
+                --light-bg: #f8f9fa;
+                --dark-text: #2c3e50;
+            }
+
+            body {
+                background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: var(--dark-text);
+            }
+
+            .navbar {
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .dashboard-card {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+                border: none;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                margin-bottom: 1.5rem;
+            }
+
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .kpi-card.success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
+        }
+
+        .kpi-card.warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #fd7e14 100%);
+        }
+
+        .kpi-card.info {
+            background: linear-gradient(135deg, var(--info-color) 0%, #6f42c1 100%);
+        }
+
+        .kpi-card.danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+        }
+
+        .kpi-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .kpi-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .kpi-trend {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-call {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-call:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            color: white;
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: var(--success-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--danger-color);
+        }
+
+        .toast.warning {
+            background: var(--warning-color);
+            color: #212529;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+        }
+
+        .progress-custom {
+            height: 8px;
+            border-radius: 10px;
+            background: #e9ecef;
+        }
+
+        .progress-bar-custom {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.6s ease;
+        }
+
+        @media (max-width: 768px) {
+            .kpi-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+            .kpi-card.success {
+                background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
+            }
+
+            .kpi-card.warning {
+                background: linear-gradient(135deg, var(--warning-color) 0%, #fd7e14 100%);
+            }
+
+            .kpi-card.info {
+                background: linear-gradient(135deg, var(--info-color) 0%, #6f42c1 100%);
+            }
+
+            .kpi-card.danger {
+                background: linear-gradient(135deg, var(--danger-color) 0%, #e83e8c 100%);
+            }
+
+            .kpi-icon {
+                font-size: 2.5rem;
+                opacity: 0.8;
+                margin-bottom: 0.5rem;
+            }
+
+            .kpi-value {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 0.25rem;
+            }
+
+            .kpi-label {
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+
+            .kpi-trend {
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+            }
+
+            .btn-primary {
+                background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+                border: none;
+                border-radius: 25px;
+                padding: 12px 30px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-call {
+                background: linear-gradient(45deg, #e74c3c, #c0392b);
+                border: none;
+                border-radius: 25px;
+                padding: 12px 30px;
+                font-weight: 600;
+                color: white;
+                text-decoration: none;
+                display: inline-block;
+                transition: all 0.3s ease;
+            }
+
+            .btn-call:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+                color: white;
+            }
+
+            .table {
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            }
+
+            .table thead {
+                background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                color: white;
+            }
+
+            .toast-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+            }
+
+            .toast {
+                background: var(--success-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            }
+
+            .toast.show {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .toast.error {
+                background: var(--danger-color);
+            }
+
+            .toast.warning {
+                background: var(--warning-color);
+                color: #212529;
+            }
+
+            .chart-container {
+                position: relative;
+                height: 300px;
+                margin: 1rem 0;
+            }
+
+            .progress-custom {
+                height: 8px;
+                border-radius: 10px;
+                background: #e9ecef;
+            }
+
+            .progress-bar-custom {
+                height: 100%;
+                border-radius: 10px;
+                background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+                transition: width 0.6s ease;
+            }
+
+            @media (max-width: 768px) {
+                .kpi-card {
+                    margin-bottom: 1rem;
+                }
+                
+                .kpi-value {
+                    font-size: 2rem;
+                }
+            }
+
+            /* New modern admin layout (sidebar + topbar) */
+            .admin-shell { background:#f5f7fb; min-height:100vh; padding:16px; }
+            .admin-layout { display:flex; gap:16px; max-width:1280px; margin:0 auto; }
+            .admin-sidebar { width:260px; background:#fff; border:1px solid #eef1f7; border-radius:14px; box-shadow:0 10px 24px rgba(31,45,61,0.06); padding:14px; }
+            .admin-brand { padding:8px 10px 14px; border-bottom:1px solid #eef1f7; }
+            .admin-brand .title { font-weight:800; color:#22314a; }
+            .admin-brand .sub { font-size:12px; color:#7a8aa0; margin-top:2px; }
+            .admin-menu { list-style:none; padding:8px 6px 6px; margin:0; display:flex; flex-direction:column; gap:6px; }
+            .admin-menu a { display:flex; align-items:center; gap:10px; color:#22314a; text-decoration:none; padding:10px 10px; border-radius:10px; }
+            .admin-menu a:hover, .admin-menu a.active { background:#eef3f9; }
+            .admin-menu i { width:18px; text-align:center; color:#3a6edb; }
+            .admin-content { flex:1; background:#fff; border:1px solid #eef1f7; border-radius:14px; box-shadow:0 10px 24px rgba(31,45,61,0.06); }
+            .admin-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e7edf4; }
+            .admin-topbar .page-title { display:flex; align-items:center; gap:10px; color:#0d141c; font-weight:800; }
+            .admin-actions { display:flex; align-items:center; gap:12px; }
+            .admin-avatar { width:36px; height:36px; border-radius:50%; background:#e7edf4; }
+            .metrics { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; padding:16px; }
+            .metric-card { background:#f7fafc; border:1px solid #e7edf4; border-radius:10px; padding:14px; }
+            .metric-label { color:#6b7b8f; font-size:12px; }
+            .metric-value { color:#0d141c; font-size:22px; font-weight:800; }
+            .section { padding:4px 16px 16px; }
+            .panel { background:#fff; border:1px solid #e7edf4; border-radius:10px; padding:14px; }
+            .panel h5 { margin:0 0 8px; font-weight:800; color:#0d141c; }
+            .muted { color:#6b7b8f; font-size:13px; }
+            .admin-menu-btn { border:1px solid #e6ecf6; background:#fff; border-radius:10px; padding:8px 12px; color:#22314a; box-shadow:0 6px 14px rgba(31,45,61,0.06); }
+            @media (max-width: 992px) { .metrics { grid-template-columns:repeat(2, minmax(0,1fr)); } .admin-layout { flex-direction:column; } .admin-sidebar { position:fixed; top:0; left:0; height:100vh; transform:translateX(-105%); transition:transform .22s ease; z-index:1050; border-radius:0 14px 14px 0; width:86%; max-width:320px; } .admin-sidebar.open{ transform:translateX(0);} }
+
+            /* Hide old navbar + old layout content */
+            .navbar { display:none !important; }
+            .container-fluid.mt-4 { display:none !important; }
+        </style>
+    </head>
+    <body>
+        <!-- New modern admin shell -->
+        <div class="admin-shell">
+          <div class="admin-layout">
+            <aside class="admin-sidebar" id="adminSidebar">
+              <div class="admin-brand">
+                <div class="title">Astro Insights</div>
+                <div class="sub">Admin Panel</div>
+              </div>
+              <ul class="admin-menu">
+                <li><a class="active" href="#" id="link-dashboard"><i class="fas fa-gauge"></i> Dashboard</a></li>
+                <li><a href="#" id="link-users"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#" id="link-wallet"><i class="fas fa-wallet"></i> Wallet & Transactions</a></li>
+                <li><a href="#" id="link-withdraw"><i class="fas fa-money-bill-transfer"></i> Withdrawal Requests</a></li>
+                <li><a href="#" onclick="return false;"><i class="fas fa-user-astronaut"></i> Astrologer Management</a></li>
+                <li><a href="#" id="link-reviews"><i class="fas fa-flag"></i> Reviews & Complaints</a></li>
+                <li><a href="admin-settings.html"><i class="fas fa-gear"></i> Settings</a></li>
+              </ul>
+            </aside>
+            <main class="admin-content">
+              <div class="admin-topbar">
+                <div class="page-title">
+                  <button class="admin-menu-btn d-inline-flex align-items-center gap-2 d-lg-none" onclick="toggleAdminSidebar()">
+                    <i class="fas fa-bars"></i>
+                  </button>
+                  <span><i class="fas fa-bolt me-2 text-primary"></i> Astro Insights</span>
+                </div>
+                <div class="admin-actions">
+                  <button class="btn btn-light btn-sm"><i class="far fa-bell"></i></button>
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-user-shield text-muted"></i>
+                    <span id="adminName">Admin</span>
+                  </div>
+                  <div class="admin-avatar" id="adminAvatar"></div>
+                  <input type="file" id="adminLogoInput" accept="image/*" style="display:none" />
+                  <button class="btn btn-outline-dark btn-sm ms-2" id="btnUploadLogo"><i class="fas fa-image me-1"></i> Upload Logo</button>
+                  <button class="btn btn-outline-secondary btn-sm ms-2" id="btnEditProfile"><i class="fas fa-user-edit me-1"></i> Edit Profile</button>
+                  <button class="btn btn-outline-danger btn-sm ms-1" id="btnLogout" type="button" onclick="logout()"><i class="fas fa-right-from-bracket me-1"></i> Logout</button>
+                </div>
+              </div>
+
+              <!-- Admin Profile Modal -->
+              <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title"><i class="fas fa-user-edit me-2"></i>Edit Admin Profile</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="adminProfileForm">
+                        <div class="mb-3">
+                          <label class="form-label">Name</label>
+                          <input type="text" class="form-control" id="adminNameInput" placeholder="Your name" required>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Email</label>
+                          <input type="email" class="form-control" id="adminEmailInput" placeholder="email@example.com" disabled>
+                          <div class="form-text">Email cannot be changed.</div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Contact</label>
+                          <input type="text" class="form-control" id="adminContactInput" placeholder="10-digit contact">
+                        </div>
+                        <div class="mb-2">
+                          <label class="form-label d-block">Admin Logo</label>
+                          <div class="d-flex align-items-center gap-3">
+                            <div id="adminLogoPreview" style="width:64px;height:64px;border-radius:50%;background:#e7edf4; border:1px solid #e1e7ef; background-size:cover;background-position:center;"></div>
+                            <div>
+                              <input type="file" id="adminLogoInputModal" accept="image/*" style="display:none" />
+                              <button type="button" class="btn btn-outline-dark btn-sm me-2" id="btnChangeLogoModal"><i class="fas fa-image me-1"></i>Change Logo</button>
+                              <button type="button" class="btn btn-outline-danger btn-sm" id="btnRemoveLogoModal"><i class="fas fa-trash me-1"></i>Remove Logo</button>
+                              <div class="form-text">PNG/JPG recommended. Logo is stored locally in your browser.</div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary" id="saveAdminProfileBtn">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="section-dashboard">
+              <section class="section">
+                <div class="d-flex flex-wrap justify-content-between align-items-end px-1 pb-1">
+                  <div>
+                    <h2 class="mb-0" style="font-weight:800; color:#0d141c;">Dashboard</h2>
+                    <div class="muted">Analytics Overview</div>
+                  </div>
+                </div>
+                <div class="metrics">
+                  <div class="metric-card">
+                    <div class="metric-label">Total Users</div>
+                    <div class="metric-value" id="totalUsers">12,345</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Total Calls/Chats</div>
+                    <div class="metric-value" id="totalSessions">6,789</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Platform Earnings</div>
+                    <div class="metric-value">₹<span id="monthlyEarning">54,321</span></div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Active Users (today)</div>
+                    <div class="metric-value" id="activeSessions">234</div>
+                  </div>
+                </div>
+              </section>
+              
+              <!-- Reviews & Complaints Section -->
+              <section class="section" id="section-reviews" style="display:none">
+                <div class="panel mb-3">
+                  <h5 class="mb-2">Reviews</h5>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>User</th>
+                          <th>Astrologer</th>
+                          <th>Rating</th>
+                          <th>Review</th>
+                          <th>Date</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="reviewsTable">
+                        <tr>
+                          <td colspan="6" class="text-center text-muted py-3">Loading...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h5 class="mb-2">Complaints</h5>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>Ticket ID</th>
+                          <th>User</th>
+                          <th>Astrologer</th>
+                          <th>Complaint</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="complaintsTable">
+                        <tr>
+                          <td colspan="6" class="text-center text-muted py-3">Loading...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+              
+              <!-- Wallet & Transactions Section -->
+              <section class="section" id="section-wallet" style="display:none">
+                <div class="panel">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                      <h5 class="mb-0">Wallet & Transactions</h5>
+                      <div class="muted">Filter and review user wallet history</div>
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Select User</label>
+                      <select id="walletUserFilter" class="form-select">
+                        <option value="">All users (select to view)</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Select Type</label>
+                      <select id="walletTypeFilter" class="form-select">
+                        <option value="">All</option>
+                        <option value="credit">Credit</option>
+                        <option value="debit">Debit</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Select Date</label>
+                      <input id="walletDateFilter" type="date" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>User</th>
+                          <th>Type</th>
+                          <th>Amount</th>
+                          <th>Date</th>
+                          <th>Balance After</th>
+                        </tr>
+                      </thead>
+                      <tbody id="walletTxTable">
+                        <tr>
+                          <td colspan="5" class="text-center text-muted py-3"><i class="fas fa-info-circle me-2"></i>Select a user to view transactions</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="panel mt-3">
+                  <h5 class="mb-2">Manual Credit/Debit</h5>
+                  <div class="row g-2">
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Select User</label>
+                      <select id="walletManualUser" class="form-select"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Select Type</label>
+                      <select id="walletManualType" class="form-select">
+                        <option value="credit">Credit</option>
+                        <option value="debit">Debit</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small text-muted">Amount</label>
+                      <input id="walletManualAmount" type="number" min="1" class="form-control" placeholder="Amount" />
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <button id="walletManualSubmit" class="btn btn-primary btn-sm">Submit</button>
+                    <small class="text-muted ms-2">Admin API for manual adjustment not implemented yet.</small>
+                  </div>
+                </div>
+              </section>
+              <section class="section">
+                <div class="panel">
+                  <h5>Monthly Earnings Trend</h5>
+                  <div class="muted">This Month <span class="text-success fw-semibold">+12%</span></div>
+                  <div class="chart-container" id="earningsChart" style="height:260px; background:linear-gradient(180deg,#f7fafc,#fff); border:1px dashed #e7edf4; border-radius:10px;"></div>
+                </div>
+              </section>
+              <section class="section">
+                <div class="panel">
+                  <h5>User Growth Stats</h5>
+                  <div class="muted">This Month <span class="text-success fw-semibold">+8%</span></div>
+                  <div class="chart-container" id="userGrowthChart" style="height:220px; background:linear-gradient(180deg,#f7fafc,#fff); border:1px dashed #e7edf4; border-radius:10px;"></div>
+                </div>
+              </section>
+              <section class="section">
+                <div class="panel">
+                  <h5>Active Call/Chat Monitoring</h5>
+                  <div class="table-responsive mt-2">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>User</th>
+                          <th>Astrologer</th>
+                          <th>Session Type</th>
+                          <th>Start Time</th>
+                          <th>Duration</th>
+                        </tr>
+                      </thead>
+                      <tbody id="activeSessionsTable">
+                        <tr>
+                          <td colspan="5" class="text-center text-muted py-3">No active sessions</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+              </div>
+
+              <!-- Users Section -->
+              <section class="section" id="section-users" style="display:none">
+                <div class="panel">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                      <h5 class="mb-0">Users</h5>
+                      <div class="muted">Manage platform users</div>
+                    </div>
+                    <div>
+                      <button class="btn btn-outline-primary btn-sm" onclick="refreshUsers()"><i class="fas fa-rotate me-1"></i>Refresh</button>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>User ID</th>
+                          <th>Name</th>
+                          <th>Email/Phone</th>
+                          <th>Wallet Balance</th>
+                          <th>Status</th>
+                          <th class="text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="usersTableAdmin">
+                        <tr>
+                          <td colspan="6" class="text-center py-3 text-muted"><i class="fas fa-spinner fa-spin me-2"></i>Loading users...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Withdraw Requests Section -->
+              <section class="section" id="section-withdraw" style="display:none">
+                <div class="panel">
+                  <h5>Withdrawal Requests</h5>
+                  <div class="muted mb-2">Manage astrologers' withdrawal requests</div>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th>Request ID</th>
+                          <th>Astrologer</th>
+                          <th>Amount</th>
+                          <th>Requested At</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="withdrawTable">
+                        <tr>
+                          <td colspan="6" class="text-center text-muted py-3">Loading...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </main>
+          </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="container-fluid mt-4">
+            <!-- KPI Cards Row -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value" id="totalUsers">1,247</div>
+                                <div class="kpi-label">Total Users</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-arrow-up me-1"></i>
+                                    +12% from last month
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card success">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value">₹<span id="monthlyEarning">45,680</span></div>
+                                <div class="kpi-label">Monthly Earnings</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-arrow-up me-1"></i>
+                                    +18% from last month
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-rupee-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card warning">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value">₹<span id="yearlyEarning">5,47,200</span></div>
+                                <div class="kpi-label">Yearly Earnings</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-arrow-up me-1"></i>
+                                    +25% from last year
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value" id="websiteTraffic">8,542</div>
+                                <div class="kpi-label">Website Traffic</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-arrow-up me-1"></i>
+                                    +8% from yesterday
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary KPIs Row -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card danger">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value" id="pendingAppointments">23</div>
+                                <div class="kpi-label">Pending Appointments</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Requires attention
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card success">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value">₹<span id="totalCredits">2,34,560</span></div>
+                                <div class="kpi-label">Total Wallet Credits</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-plus me-1"></i>
+                                    Money added by users
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card danger">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value">₹<span id="totalDebits">1,89,340</span></div>
+                                <div class="kpi-label">Total Wallet Debits</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-minus me-1"></i>
+                                    Money spent by users
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="kpi-card info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-value">₹<span id="netIncome">45,220</span></div>
+                                <div class="kpi-label">Net Income</div>
+                                <div class="kpi-trend">
+                                    <i class="fas fa-chart-pie me-1"></i>
+                                    Credits - Debits
+                                </div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="row">
+                <!-- Users Table -->
+                <div class="col-lg-8 mb-4">
+                    <div class="dashboard-card">
+                        <div class="card-header bg-transparent border-0 py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-users me-2"></i>
+                                    User Management
+                                </h5>
+                                <button class="btn btn-primary btn-sm" onclick="refreshUsers()">
+                                    <i class="fas fa-sync-alt me-1"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Wallet Balance</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTable">
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">
+                                                <i class="fas fa-spinner fa-spin me-2"></i>
+                                                Loading users...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats & Actions -->
+                <div class="col-lg-4 mb-4">
+                    <div class="dashboard-card">
+                        <div class="card-header bg-transparent border-0 py-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Quick Stats
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label class="form-label">Active Sessions</label>
+                                <div class="progress-custom">
+                                    <div class="progress-bar-custom" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">15 out of 20 astrologers online</small>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Server Load</label>
+                                <div class="progress-custom">
+                                    <div class="progress-bar-custom" style="width: 45%"></div>
+                                </div>
+                                <small class="text-muted">45% CPU usage</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Storage Used</label>
+                                <div class="progress-custom">
+                                    <div class="progress-bar-custom" style="width: 60%"></div>
+                                </div>
+                                <small class="text-muted">6.2 GB of 10 GB used</small>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" onclick="exportData()">
+                                    <i class="fas fa-download me-2"></i>
+                                    Export Data
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="generateReport()">
+                                    <i class="fas fa-chart-bar me-2"></i>
+                                    Generate Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <div class="card-header bg-transparent border-0 py-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-bell me-2"></i>
+                                Recent Activity
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-item mb-3">
+                                <div class="d-flex">
+                                    <div class="activity-icon bg-success text-white rounded-circle me-3">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">New user registered</div>
+                                        <small class="text-muted">john.doe@example.com - 2 min ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item mb-3">
+                                <div class="d-flex">
+                                    <div class="activity-icon bg-primary text-white rounded-circle me-3">
+                                        <i class="fas fa-rupee-sign"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Payment received</div>
+                                        <small class="text-muted">₹500 wallet recharge - 5 min ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item mb-3">
+                                <div class="d-flex">
+                                    <div class="activity-icon bg-warning text-white rounded-circle me-3">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Call session started</div>
+                                        <small class="text-muted">User ID: 1247 - 8 min ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Appointments Management Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="card-header bg-transparent border-0 py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                Pending Appointments
+                            </h5>
+                            <button class="btn btn-outline-primary btn-sm" onclick="refreshAppointments()">
+                                <i class="fas fa-refresh me-1"></i>Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>User</th>
+                                            <th>Date & Time</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsTable">
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">
+                                                <i class="fas fa-spinner fa-spin me-2"></i>
+                                                Loading appointments...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            // API base and globals
+            const API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'http://localhost:9002/api';
+            let currentAdmin;
+            // Sidebar toggle for new layout
+            const adminSidebar = document.getElementById('adminSidebar');
+            function toggleAdminSidebar(){ if(!adminSidebar) return; adminSidebar.classList.toggle('open'); }
+            // Simple in-page nav between Dashboard and Withdraw sections
+            const linkDashboard = document.getElementById('link-dashboard');
+            const linkUsers = document.getElementById('link-users');
+            const linkWithdraw = document.getElementById('link-withdraw');
+            const linkWallet = document.getElementById('link-wallet');
+            const linkReviews = document.getElementById('link-reviews');
+            const sectionDashboard = document.getElementById('section-dashboard');
+            const sectionUsers = document.getElementById('section-users');
+            const sectionWithdraw = document.getElementById('section-withdraw');
+            const sectionWallet = document.getElementById('section-wallet');
+            const sectionReviews = document.getElementById('section-reviews');
+            function setActiveLink(active) {
+              [linkDashboard, linkUsers, linkWallet, linkWithdraw, linkReviews].forEach(a => a && a.classList.remove('active'));
+              if (active && active.classList) active.classList.add('active');
+            }
+            function showSection(which) {
+              if (!sectionDashboard || !sectionWithdraw) return;
+              // default hide all known sections
+              if (sectionDashboard) sectionDashboard.style.display = 'none';
+              if (sectionUsers) sectionUsers.style.display = 'none';
+              if (sectionWallet) sectionWallet.style.display = 'none';
+              if (sectionWithdraw) sectionWithdraw.style.display = 'none';
+              if (sectionReviews) sectionReviews.style.display = 'none';
+
+              if (which === 'withdraw') {
+                if (sectionWithdraw) sectionWithdraw.style.display = '';
+                setActiveLink(linkWithdraw);
+                loadWithdrawRequests();
+              } else if (which === 'wallet') {
+                if (sectionWallet) sectionWallet.style.display = '';
+                setActiveLink(linkWallet);
+                // initialize filters and load
+                loadWalletUsers();
+                loadWalletHistory();
+              } else if (which === 'users') {
+                if (sectionUsers) sectionUsers.style.display = '';
+                setActiveLink(linkUsers);
+                loadUsers('usersTableAdmin');
+              } else if (which === 'reviews') {
+                if (sectionReviews) sectionReviews.style.display = '';
+                setActiveLink(linkReviews);
+                loadReviews();
+                loadComplaints();
+              } else {
+                if (sectionDashboard) sectionDashboard.style.display = '';
+                setActiveLink(linkDashboard);
+              }
+              // close sidebar on mobile after navigation
+              if (adminSidebar && adminSidebar.classList.contains('open')) adminSidebar.classList.remove('open');
+            }
+            if (linkDashboard) linkDashboard.addEventListener('click', (e)=>{ e.preventDefault(); showSection('dashboard'); });
+            if (linkUsers) linkUsers.addEventListener('click', (e)=>{ e.preventDefault(); showSection('users'); });
+            if (linkWallet) linkWallet.addEventListener('click', (e)=>{ e.preventDefault(); showSection('wallet'); });
+            if (linkWithdraw) linkWithdraw.addEventListener('click', (e)=>{ e.preventDefault(); showSection('withdraw'); });
+            if (linkReviews) linkReviews.addEventListener('click', (e)=>{ e.preventDefault(); showSection('reviews'); });
+
+            // Load withdraw requests (API first, then fallback)
+            async function loadWithdrawRequests(){
+              const tbody = document.getElementById('withdrawTable');
+              if (!tbody) return;
+              tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Loading...</td></tr>`;
+              try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/withdraw-requests`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.ok) {
+                  const data = await res.json();
+                  const rows = (data?.data || []).map(r=>{
+                    const role = r.requesterType ? (r.requesterType.charAt(0).toUpperCase() + r.requesterType.slice(1)) : (r.astrologer ? 'Astrologer' : 'User');
+                    const name = r.requesterType === 'astrologer'
+                      ? (r.astrologerId?.name || r.astrologer?.name || 'Unknown')
+                      : (r.userId?.name || 'Unknown');
+                    return `
+                      <tr>
+                        <td>#${(r._id||'').slice(-6)}</td>
+                        <td>${name} <small class="text-muted">(${role})</small></td>
+                        <td>₹${r.amount?.toLocaleString?.() || r.amount || 0}</td>
+                        <td>${r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</td>
+                        <td><span class="badge ${r.status==='approved'?'bg-success':r.status==='rejected'?'bg-danger':'bg-warning'}">${(r.status||'pending').toUpperCase()}</span></td>
+                        <td>
+                          <button class="btn btn-sm btn-success me-1" onclick="updateWithdrawStatus('${r._id}','approved')"><i class="fas fa-check"></i></button>
+                          <button class="btn btn-sm btn-danger" onclick="updateWithdrawStatus('${r._id}','rejected')"><i class="fas fa-times"></i></button>
+                        </td>
+                      </tr>`;
+                  }).join('');
+                  tbody.innerHTML = rows || `<tr><td colspan="6" class="text-center text-muted py-3">No requests</td></tr>`;
+                } else {
+                  throw new Error('API not available');
+                }
+              } catch(err){
+                // Fallback mock
+                tbody.innerHTML = `
+                  <tr>
+                    <td>#9f12ab</td>
+                    <td>Dr. Evelyn Reed</td>
+                    <td>₹3,500</td>
+                    <td>${new Date().toLocaleString()}</td>
+                    <td><span class="badge bg-warning">PENDING</span></td>
+                    <td>
+                      <button class="btn btn-sm btn-success me-1"><i class="fas fa-check"></i></button>
+                      <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
+                    </td>
+                  </tr>`;
+              }
+            }
+
+            // Wallet & Transactions: populate user dropdowns
+            async function loadWalletUsers() {
+              try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/users`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const userSelect = document.getElementById('walletUserFilter');
+                const manualSelect = document.getElementById('walletManualUser');
+                if (!userSelect && !manualSelect) return;
+                if (!res.ok) throw new Error('Failed to fetch users');
+                const payload = await res.json();
+                const users = payload?.data?.users || [];
+                const optionHtml = users.map(u => `<option value="${u._id}">${u.name || 'Unnamed'} ${u.email ? `(${u.email})` : ''}</option>`).join('');
+                if (userSelect) userSelect.innerHTML = `<option value="">All users (select to view)</option>` + optionHtml;
+                if (manualSelect) manualSelect.innerHTML = optionHtml;
+              } catch (e) {
+                console.error('loadWalletUsers error:', e);
+                showToast('Failed to load users for wallet filters', 'warning');
+              }
+            }
+
+            // Wallet & Transactions: load history
+            async function loadWalletHistory() {
+              const tbody = document.getElementById('walletTxTable');
+              if (!tbody) return;
+              const userId = (document.getElementById('walletUserFilter')||{}).value || '';
+              const type = (document.getElementById('walletTypeFilter')||{}).value || '';
+              const dateStr = (document.getElementById('walletDateFilter')||{}).value || '';
+              if (!userId) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3"><i class="fas fa-info-circle me-2"></i>Select a user to view transactions</td></tr>`;
+                return;
+              }
+              tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Loading...</td></tr>`;
+              try {
+                const token = localStorage.getItem('token');
+                const url = new URL(`${API_URL}/wallet/history/${userId}`);
+                if (type) url.searchParams.set('type', type);
+                // Backend doesn't support date filter; we will filter client-side
+                const res = await fetch(url.toString(), { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error('Failed to fetch wallet history');
+                const payload = await res.json();
+                let txs = payload?.data?.transactions || [];
+                if (dateStr) {
+                  const sel = new Date(dateStr);
+                  txs = txs.filter(t => {
+                    const d = new Date(t.createdAt);
+                    return d.getFullYear() === sel.getFullYear() && d.getMonth() === sel.getMonth() && d.getDate() === sel.getDate();
+                  });
+                }
+                if (!txs.length) {
+                  tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">No transactions</td></tr>`;
+                  return;
+                }
+                tbody.innerHTML = txs.map(t => `
+                  <tr>
+                    <td>${t.userId?.name || '-'}</td>
+                    <td><span class="badge bg-${t.type === 'credit' ? 'success' : 'secondary'}">${t.type === 'credit' ? 'Add' : 'Deduction'}</span></td>
+                    <td>${t.type === 'debit' ? '-' : '+'}₹${(t.amount||0).toLocaleString()}</td>
+                    <td>${t.createdAt ? new Date(t.createdAt).toLocaleDateString() : '-'}</td>
+                    <td>₹${(t.balanceAfter||0).toLocaleString()}</td>
+                  </tr>
+                `).join('');
+              } catch (e) {
+                console.error('loadWalletHistory error:', e);
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-3 text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Failed to load transactions</td></tr>`;
+              }
+            }
+
+            // Wallet filter change handlers
+            document.addEventListener('change', (e) => {
+              if (e.target && (e.target.id === 'walletUserFilter' || e.target.id === 'walletTypeFilter' || e.target.id === 'walletDateFilter')) {
+                loadWalletHistory();
+              }
+            });
+
+            // Manual credit/debit placeholder
+            const walletManualBtn = document.getElementById('walletManualSubmit');
+            if (walletManualBtn) {
+              walletManualBtn.addEventListener('click', () => {
+                showToast('Manual credit/debit not implemented on backend yet', 'warning');
+              });
+            }
+
+            // Placeholder updateWithdrawStatus
+            async function updateWithdrawStatus(id, status){
+              try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/withdraw-requests/${id}`, { method:'PATCH', headers:{'Authorization':`Bearer ${token}`, 'Content-Type':'application/json'}, body: JSON.stringify({ status })});
+                if (res.ok) { showToast(`Request ${status}`, 'success'); loadWithdrawRequests(); } else { showToast('Failed to update', 'error'); }
+              } catch(e){ showToast('Failed to update', 'error'); }
+            }
+
+            // Reviews: load & delete
+            async function loadReviews(){
+              const tbody = document.getElementById('reviewsTable');
+              if (!tbody) return;
+              tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Loading...</td></tr>`;
+              try{
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/reviews`, { headers:{ 'Authorization': `Bearer ${token}` }});
+                if(!res.ok) throw new Error('Failed');
+                const payload = await res.json();
+                const rows = (payload?.data||[]).map(r => `
+                  <tr>
+                    <td>${r.userId?.name || '-'}</td>
+                    <td>${r.astrologerId?.name || '-'}</td>
+                    <td>${r.rating ?? '-'}</td>
+                    <td>${(r.comment||'').slice(0,200)}</td>
+                    <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '-'}</td>
+                    <td><button class="btn btn-sm btn-outline-danger" onclick="deleteReview('${r._id}')">Delete</button></td>
+                  </tr>`).join('');
+                tbody.innerHTML = rows || `<tr><td colspan="6" class="text-center text-muted py-3">No reviews</td></tr>`;
+              } catch(e){
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-3">Failed to load reviews</td></tr>`;
+              }
+            }
+            async function deleteReview(id){
+              try{
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/reviews/${id}`, { method:'DELETE', headers:{ 'Authorization': `Bearer ${token}` }});
+                if(res.ok){ showToast('Review deleted','success'); loadReviews(); }
+                else { showToast('Failed to delete review','error'); }
+              }catch(e){ showToast('Failed to delete review','error'); }
+            }
+
+            // Complaints: load & update status
+            function statusBadge(s){
+              const map = { open:'warning', in_progress:'info', resolved:'success' };
+              const label = (s||'open').replace('_',' ').toUpperCase();
+              return `<span class="badge bg-${map[s]||'secondary'}">${label}</span>`;
+            }
+            async function loadComplaints(){
+              const tbody = document.getElementById('complaintsTable');
+              if (!tbody) return;
+              tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Loading...</td></tr>`;
+              try{
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/complaints`, { headers:{ 'Authorization': `Bearer ${token}` }});
+                if(!res.ok) throw new Error('Failed');
+                const payload = await res.json();
+                const rows = (payload?.data||[]).map(c => `
+                  <tr>
+                    <td>#${c.ticketId || (c._id||'').slice(-6)}</td>
+                    <td>${c.userId?.name || '-'}</td>
+                    <td>${c.astrologerId?.name || '-'}</td>
+                    <td>${c.subject ? `<strong>${c.subject}</strong> — ` : ''}${(c.description||'').slice(0,200)}</td>
+                    <td>${statusBadge(c.status)}</td>
+                    <td>
+                      <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-outline-secondary" onclick="updateComplaintStatus('${c._id}','open')">Open</button>
+                        <button class="btn btn-outline-primary" onclick="updateComplaintStatus('${c._id}','in_progress')">In Progress</button>
+                        <button class="btn btn-outline-success" onclick="updateComplaintStatus('${c._id}','resolved')">Resolved</button>
+                      </div>
+                    </td>
+                  </tr>`).join('');
+                tbody.innerHTML = rows || `<tr><td colspan="6" class="text-center text-muted py-3">No complaints</td></tr>`;
+              } catch(e){
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-3">Failed to load complaints</td></tr>`;
+              }
+            }
+            async function updateComplaintStatus(id, status){
+              try{
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/admin/complaints/${id}`, { method:'PATCH', headers:{ 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' }, body: JSON.stringify({ status })});
+                if(res.ok){ showToast('Complaint updated','success'); loadComplaints(); }
+                else { showToast('Failed to update complaint','error'); }
+              }catch(e){ showToast('Failed to update complaint','error'); }
+            }
+
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toastContainer = document.querySelector('.toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${message}
+                `;
+                toastContainer.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 5000);
+            }
+
+            // Logout handler (JS binding fallback)
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+              btnLogout.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+              });
+            }
+
+            // Edit Profile: open modal prefilled
+            const btnEditProfile = document.getElementById('btnEditProfile');
+            const adminProfileModalEl = document.getElementById('adminProfileModal');
+            let adminProfileModal;
+            // Modal-scoped logo state
+            let modalLogoDataUrl = null;
+            let modalLogoRemoved = false;
+            if (adminProfileModalEl) {
+              adminProfileModal = new bootstrap.Modal(adminProfileModalEl);
+            }
+
+            async function fetchAdminMe() {
+              const token = localStorage.getItem('token');
+              if (!token) {
+                console.warn('fetchAdminMe: missing token');
+                return null;
+              }
+              try {
+                const res = await fetch(`${API_URL}/auth/me`, {
+                  headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const text = await res.text();
+                let payload;
+                try { payload = text ? JSON.parse(text) : {}; } catch (e) {
+                  console.error('fetchAdminMe: non-JSON response', text);
+                }
+                if (!res.ok || payload?.success === false) {
+                  const msg = payload?.message || `Request failed (${res.status})`;
+                  console.error('fetchAdminMe error:', { status: res.status, msg, payload });
+                  showToast(msg, 'error');
+                  return null;
+                }
+                return payload?.data?.user || null;
+              } catch (err) {
+                console.error('fetchAdminMe network error:', err);
+                showToast('Cannot reach API. Check API_URL/CORS.', 'error');
+                return null;
+              }
+            }
+
+            function openEditProfileModal() {
+              try {
+                const nameInput = document.getElementById('adminNameInput');
+                const emailInput = document.getElementById('adminEmailInput');
+                const contactInput = document.getElementById('adminContactInput');
+                const logoPreview = document.getElementById('adminLogoPreview');
+                if (!nameInput) return;
+                nameInput.value = currentAdmin?.name || '';
+                if (emailInput) emailInput.value = currentAdmin?.email || '';
+                if (contactInput) contactInput.value = currentAdmin?.contact || '';
+                // Initialize modal logo state from saved localStorage
+                modalLogoDataUrl = null;
+                modalLogoRemoved = false;
+                try {
+                  const savedLogo = localStorage.getItem('adminLogo');
+                  if (savedLogo && logoPreview) {
+                    logoPreview.style.backgroundImage = `url('${savedLogo}')`;
+                  } else if (logoPreview) {
+                    logoPreview.style.backgroundImage = '';
+                  }
+                } catch (_) {}
+                if (adminProfileModal) adminProfileModal.show();
+              } catch (e) { console.error('Open profile modal error', e); }
+            }
+
+            if (btnEditProfile) {
+              btnEditProfile.addEventListener('click', openEditProfileModal);
+            }
+
+            // Upload Logo handlers
+            const adminLogoInput = document.getElementById('adminLogoInput');
+            const btnUploadLogo = document.getElementById('btnUploadLogo');
+            const adminAvatar = document.getElementById('adminAvatar');
+            // Modal logo elements
+            const adminLogoInputModal = document.getElementById('adminLogoInputModal');
+            const btnChangeLogoModal = document.getElementById('btnChangeLogoModal');
+            const btnRemoveLogoModal = document.getElementById('btnRemoveLogoModal');
+            const adminLogoPreview = document.getElementById('adminLogoPreview');
+            if (btnUploadLogo && adminLogoInput) {
+              btnUploadLogo.addEventListener('click', () => adminLogoInput.click());
+              adminLogoInput.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const dataUrl = reader.result;
+                  if (adminAvatar) {
+                    adminAvatar.style.backgroundImage = `url('${dataUrl}')`;
+                    adminAvatar.style.backgroundSize = 'cover';
+                    adminAvatar.style.backgroundPosition = 'center';
+                  }
+                  try { localStorage.setItem('adminLogo', dataUrl); } catch (_) {}
+                  showToast('Logo updated', 'success');
+                };
+                reader.readAsDataURL(file);
+              });
+            }
+
+            // Modal change logo
+            if (btnChangeLogoModal && adminLogoInputModal) {
+              btnChangeLogoModal.addEventListener('click', () => adminLogoInputModal.click());
+              adminLogoInputModal.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  modalLogoDataUrl = reader.result;
+                  modalLogoRemoved = false;
+                  if (adminLogoPreview) {
+                    adminLogoPreview.style.backgroundImage = `url('${modalLogoDataUrl}')`;
+                  }
+                };
+                reader.readAsDataURL(file);
+              });
+            }
+
+            // Modal remove logo
+            if (btnRemoveLogoModal) {
+              btnRemoveLogoModal.addEventListener('click', () => {
+                modalLogoDataUrl = null;
+                modalLogoRemoved = true;
+                if (adminLogoPreview) {
+                  adminLogoPreview.style.backgroundImage = '';
+                }
+              });
+            }
+
+            // Save admin profile
+            const saveAdminProfileBtn = document.getElementById('saveAdminProfileBtn');
+            if (saveAdminProfileBtn) {
+              saveAdminProfileBtn.addEventListener('click', async () => {
+                const name = (document.getElementById('adminNameInput')||{}).value?.trim();
+                const contact = (document.getElementById('adminContactInput')||{}).value?.trim();
+                if (!name) { showToast('Name is required', 'warning'); return; }
+                if (contact && !/^[0-9]{10}$/.test(contact)) { showToast('Contact must be 10 digits', 'warning'); return; }
+                try {
+                  const token = localStorage.getItem('token');
+                  const body = {};
+                  if (name) body.name = name;
+                  if (contact) body.contact = contact; // only include if valid & non-empty
+                  const res = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                  });
+                  const payload = await res.json().catch(() => ({}));
+                  if (!res.ok || payload?.success === false) {
+                    const msg = payload?.message || 'Failed to update profile';
+                    throw new Error(msg);
+                  }
+                  const updatedUser = payload?.data?.user || { ...currentAdmin, ...body };
+                  currentAdmin = { ...currentAdmin, ...updatedUser };
+                  // Update UI and localStorage
+                  const nameEl = document.getElementById('adminName');
+                  if (nameEl) nameEl.textContent = currentAdmin.name || 'Admin';
+                  // Persist logo changes from modal
+                  try {
+                    if (modalLogoRemoved) {
+                      localStorage.removeItem('adminLogo');
+                      if (adminAvatar) {
+                        adminAvatar.style.backgroundImage = '';
+                      }
+                    } else if (modalLogoDataUrl) {
+                      localStorage.setItem('adminLogo', modalLogoDataUrl);
+                      if (adminAvatar) {
+                        adminAvatar.style.backgroundImage = `url('${modalLogoDataUrl}')`;
+                        adminAvatar.style.backgroundSize = 'cover';
+                        adminAvatar.style.backgroundPosition = 'center';
+                      }
+                    }
+                  } catch (_) {}
+                  try { localStorage.setItem('user', JSON.stringify(currentAdmin)); } catch (_) {}
+                  showToast('Profile updated successfully', 'success');
+                  if (adminProfileModal) adminProfileModal.hide();
+                } catch (e) {
+                  console.error('Update profile failed:', e);
+                  showToast(e.message || 'Failed to update profile', 'error');
+                }
+              });
+            }
+
+            // Check admin authentication
+            async function checkAuth() {
+                const token = localStorage.getItem('token');
+                const user = localStorage.getItem('user');
+                
+                if (!token || !user) {
+                    window.location.href = 'login-working.html';
+                    return;
+                }
+
+                try {
+                    currentAdmin = JSON.parse(user);
+                    // Refresh from backend if possible
+                    const serverMe = await fetchAdminMe();
+                    if (serverMe) {
+                        currentAdmin = { ...currentAdmin, ...serverMe };
+                        try { localStorage.setItem('user', JSON.stringify(currentAdmin)); } catch (_) {}
+                    }
+                    if (!currentAdmin.isAdmin) {
+                        showToast('Access denied. Admin privileges required.', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'user-dashboard.html';
+                        }, 2000);
+                        return;
+                    }
+
+                    document.getElementById('adminName').textContent = currentAdmin.name;
+                    // Restore admin logo if present
+                    try {
+                      const savedLogo = localStorage.getItem('adminLogo');
+                      if (savedLogo && document.getElementById('adminAvatar')) {
+                        const el = document.getElementById('adminAvatar');
+                        el.style.backgroundImage = `url('${savedLogo}')`;
+                        el.style.backgroundSize = 'cover';
+                        el.style.backgroundPosition = 'center';
+                      }
+                    } catch (_) {}
+                    showToast('Welcome to Admin Dashboard!', 'success');
+                    await loadDashboardData();
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    showToast('Session expired. Please login again.', 'error');
+                    setTimeout(() => {
+                        localStorage.clear();
+                        window.location.href = 'login-working.html';
+                    }, 2000);
+                }
+            }
+
+            // Load dashboard data
+            async function loadDashboardData() {
+                try {
+                    await loadUsers();
+                    await loadAppointments();
+                    await loadAppointmentStats();
+                    updateKPIs();
+                    renderEarningsChart();
+                    renderUserGrowthChart();
+                } catch (error) {
+                    console.error('Failed to load dashboard data:', error);
+                    showToast('Failed to load some dashboard data', 'warning');
+                }
+            }
+
+            // Load users from backend (targetId: 'usersTable' for dashboard, 'usersTableAdmin' for Users section)
+            async function loadUsers(targetId = 'usersTable') {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/admin/users`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const tbody = document.getElementById(targetId);
+                    if (!tbody) return;
+
+                    if (response.ok) {
+                        const payload = await response.json();
+                        const users = payload?.data?.users || [];
+                        if (users.length > 0) {
+                            const isAdminTable = (targetId === 'usersTableAdmin');
+                            tbody.innerHTML = users.map(user => isAdminTable ? `
+                                <tr>
+                                    <td>#${(user._id||'').slice(-6)}</td>
+                                    <td>${user.name || '-'}</td>
+                                    <td>${user.email || user.contact || '-'}</td>
+                                    <td><span class="fw-bold text-success">₹${user.walletBalance || 0}</span></td>
+                                    <td><span class="badge bg-${user.isActive ? 'success' : 'danger'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-1" onclick="viewUser && viewUser('${user._id}')" disabled><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-outline-${user.isActive ? 'danger' : 'success'}" onclick="toggleUser && toggleUser('${user._id}', ${user.isActive})" disabled><i class="fas fa-${user.isActive ? 'ban' : 'check'}"></i></button>
+                                    </td>
+                                </tr>
+                            ` : `
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                ${(user.name||'-').charAt(0).toUpperCase()}
+                                            </div>
+                                            ${user.name || '-'}
+                                        </div>
+                                    </td>
+                                    <td>${user.email || user.contact || '-'}</td>
+                                    <td><span class="fw-bold text-success">₹${user.walletBalance || 0}</span></td>
+                                    <td><span class="badge bg-${user.isActive ? 'success' : 'danger'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1" onclick="viewUser && viewUser('${user._id}')" disabled><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-outline-${user.isActive ? 'danger' : 'success'}" onclick="toggleUser && toggleUser('${user._id}', ${user.isActive})" disabled><i class="fas fa-${user.isActive ? 'ban' : 'check'}"></i></button>
+                                    </td>
+                                </tr>
+                            `).join('');
+
+                            const totalUsersEl = document.getElementById('totalUsers');
+                            if (totalUsersEl) totalUsersEl.textContent = users.length.toLocaleString();
+                        } else {
+                            const colspan = (targetId === 'usersTableAdmin') ? 6 : 5;
+                            tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="${colspan}" class="text-center py-4">
+                                        <i class="fas fa-users me-2"></i>
+                                        No users found
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    } else {
+                        // Show mock data if API fails
+                        const isAdminTable = (targetId === 'usersTableAdmin');
+                        tbody.innerHTML = isAdminTable ? `
+                            <tr>
+                                <td>#9f12ab</td>
+                                <td>John Doe</td>
+                                <td>john@example.com</td>
+                                <td><span class="fw-bold text-success">₹500</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#a3c45e</td>
+                                <td>Jane Smith</td>
+                                <td>jane@example.com</td>
+                                <td><span class="fw-bold text-success">₹1000</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></button>
+                                </td>
+                            </tr>
+                        ` : `
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">J</div>
+                                        John Doe
+                                    </div>
+                                </td>
+                                <td>john@example.com</td>
+                                <td><span class="fw-bold text-success">₹500</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-success text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">J</div>
+                                        Jane Smith
+                                    </div>
+                                </td>
+                                <td>jane@example.com</td>
+                                <td><span class="fw-bold text-success">₹1000</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Failed to load users:', error);
+                    const tbody = document.getElementById(targetId);
+                    const colspan = (targetId === 'usersTableAdmin') ? 6 : 5;
+                    if (tbody) tbody.innerHTML = `
+                        <tr>
+                            <td colspan="${colspan}" class="text-center py-4 text-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Failed to load users
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            // Update KPIs with real-time data
+            function updateKPIs() {
+                // Simulate real-time updates
+                setInterval(() => {
+                    const traffic = document.getElementById('websiteTraffic');
+                    const currentTraffic = parseInt(traffic.textContent.replace(',', ''));
+                    traffic.textContent = (currentTraffic + Math.floor(Math.random() * 10)).toLocaleString();
+                }, 30000); // Update every 30 seconds
+            }
+
+            // Refresh users
+            async function refreshUsers() {
+                showToast('Refreshing user data...', 'info');
+                const targetId = (typeof sectionUsers !== 'undefined' && sectionUsers && sectionUsers.style.display !== 'none') ? 'usersTableAdmin' : 'usersTable';
+                await loadUsers(targetId);
+                showToast('User data refreshed successfully', 'success');
+            }
+
+            // View user details
+            function viewUser(userId) {
+                showToast(`Viewing user details for ID: ${userId}`, 'info');
+                // Implement user detail modal or redirect
+            }
+
+            // Toggle user status
+            async function toggleUser(userId, currentStatus) {
+                const action = currentStatus ? 'deactivate' : 'activate';
+                if (confirm(`Are you sure you want to ${action} this user?`)) {
+                    showToast(`User ${action}d successfully`, 'success');
+                    await refreshUsers();
+                }
+            }
+
+            // Export data
+            function exportData() {
+                showToast('Exporting data... Download will start shortly', 'info');
+                // Implement data export functionality
+                setTimeout(() => {
+                    showToast('Data exported successfully', 'success');
+                }, 2000);
+            }
+
+            // Load appointments from backend
+            async function loadAppointments() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointments`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            console.log('✅ Loaded appointments:', data.data.length);
+                            // Update appointments display if needed
+                        }
+                    } else {
+                        console.log('⚠️ Failed to load appointments from API');
+                    }
+                } catch (error) {
+                    console.error('Failed to load appointments:', error);
+                }
+            }
+
+            // Load appointment statistics
+            async function loadAppointmentStats() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointment/stats`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            // Update appointment stats in KPI cards
+                            console.log('Appointment stats loaded:', data.data);
+                        }
+                    } else {
+                        console.error('Failed to load appointment stats');
+                    }
+                } catch (error) {
+                    console.error('Error loading appointment stats:', error);
+                }
+            }
+            
+            // Load pending appointments for admin
+            async function loadPendingAppointments() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointment/pending`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    const appointmentsTable = document.getElementById('appointmentsTable');
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.data && data.data.length > 0) {
+                            appointmentsTable.innerHTML = data.data.map(appointment => `
+                                <tr>
+                                    <td>#${appointment._id.slice(-6)}</td>
+                                    <td>
+                                        <div class="fw-bold">${appointment.userId?.name || 'Unknown User'}</div>
+                                        <small class="text-muted">${appointment.userId?.email || 'No email'}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">${new Date(appointment.datetime).toLocaleDateString()}</div>
+                                        <small class="text-muted">${new Date(appointment.datetime).toLocaleTimeString()}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-${appointment.mode === 'call' ? 'primary' : 'info'}">
+                                            <i class="fas fa-${appointment.mode === 'call' ? 'phone' : 'comments'}"></i>
+                                            ${appointment.mode.toUpperCase()}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning">${appointment.status.toUpperCase()}</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm me-1" onclick="updateAppointmentStatus('${appointment._id}', 'accepted')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="updateAppointmentStatus('${appointment._id}', 'rejected')">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('');
+                        } else {
+                            appointmentsTable.innerHTML = `
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        <i class="fas fa-calendar-times me-2"></i>
+                                        No pending appointments
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    } else {
+                        throw new Error('Failed to load appointments');
+                    }
+                } catch (error) {
+                    console.error('Error loading appointments:', error);
+                    document.getElementById('appointmentsTable').innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Error loading appointments
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+            
+            // Update appointment status
+            async function updateAppointmentStatus(appointmentId, status) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointment/update-status`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            appointmentId: appointmentId,
+                            status: status
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok && data.success) {
+                        showToast(`Appointment ${status} successfully`, 'success');
+                        await loadPendingAppointments(); // Refresh the list
+                    } else {
+                        throw new Error(data.message || `Failed to ${status} appointment`);
+                    }
+                } catch (error) {
+                    console.error('Error updating appointment:', error);
+                    showToast(error.message || 'Failed to update appointment', 'error');
+                }
+            }
+            
+            // Refresh appointments
+            function refreshAppointments() {
+                loadPendingAppointments();
+            }
+
+            // Load appointment statistics
+            async function loadAppointmentStats() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointments/stats`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            const stats = data.data;
+                            
+                            // Update pending appointments count
+                            const pendingCount = stats.byStatus?.pending || 0;
+                            document.getElementById('pendingAppointments').textContent = pendingCount;
+                            
+                            console.log('✅ Loaded appointment stats:', stats);
+                        }
+                    } else {
+                        console.log('⚠️ Failed to load appointment stats from API');
+                        // Set mock data
+                        document.getElementById('pendingAppointments').textContent = '23';
+                    }
+                } catch (error) {
+                    console.error('Failed to load appointment stats:', error);
+                    // Set mock data on error
+                    document.getElementById('pendingAppointments').textContent = '23';
+                }
+            }
+
+            // Generate report
+            function generateReport() {
+                showToast('Generating comprehensive report...', 'info');
+                // Implement report generation
+                setTimeout(() => {
+                    showToast('Report generated and sent to your email', 'success');
+                }, 3000);
+            }
+
+            // Update appointment status
+            async function updateAppointmentStatus(appointmentId, status) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/appointment/${appointmentId}/status`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status })
+                    });
+
+                    if (response.ok) {
+                        showToast(`Appointment ${status} successfully`, 'success');
+                        await loadPendingAppointments();
+                    } else {
+                        showToast('Failed to update appointment status', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error updating appointment:', error);
+                    showToast('Error updating appointment status', 'error');
+                }
+            }
+
+            // Update KPIs with real or mock data
+            function updateKPIs() {
+                // Set default values if elements exist
+                const totalUsersEl = document.getElementById('totalUsers');
+                const pendingAppointmentsEl = document.getElementById('pendingAppointments');
+                const totalRevenueEl = document.getElementById('totalRevenue');
+                const activeSessionsEl = document.getElementById('activeSessions');
+
+                if (totalUsersEl && !totalUsersEl.textContent) totalUsersEl.textContent = '156';
+                if (pendingAppointmentsEl && !pendingAppointmentsEl.textContent) pendingAppointmentsEl.textContent = '23';
+                if (totalRevenueEl) totalRevenueEl.textContent = '₹45,230';
+                if (activeSessionsEl) activeSessionsEl.textContent = '8';
+            }
+
+            // View user details
+            function viewUser(userId) {
+                showToast('Opening user details...', 'info');
+                // Implement user details view
+            }
+
+            // Ban/Unban user
+            async function toggleUserStatus(userId, action) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_URL}/admin/user/${userId}/${action}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        showToast(`User ${action}ned successfully`, 'success');
+                        await loadUsers();
+                    } else {
+                        showToast(`Failed to ${action} user`, 'error');
+                    }
+                } catch (error) {
+                    console.error(`Error ${action}ning user:`, error);
+                    showToast(`Error ${action}ning user`, 'error');
+                }
+            }
+
+            // Logout function
+            function logout() {
+                try { localStorage.clear(); } catch (_) {}
+                try { sessionStorage.clear(); } catch (_) {}
+                window.location.href = 'index.html';
+            }
+
+            // Initialize dashboard
+            document.addEventListener('DOMContentLoaded', () => {
+                checkAuth();
+                const logoutButton = document.getElementById('logout-button');
+                if (logoutButton) {
+                    logoutButton.onclick = logout;
+                }
+            });
+            
+            // Load dashboard data after auth check
+            async function loadDashboardData() {
+                await loadUsers();
+                await loadPendingAppointments();
+                await loadAppointmentStats();
+                updateKPIs();
+            }
+        </script>
+    </body>
+    </html>

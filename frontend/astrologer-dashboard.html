@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrologer Dashboard - Astrology Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-online {
+            color: var(--success-color);
+        }
+
+        .status-offline {
+            color: var(--danger-color);
+        }
+
+        .availability-toggle {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-star me-2"></i>
+                Astrologer Panel
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    Welcome, <span id="astrologerName">Astrologer</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Status & Availability Row -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <h3 id="totalEarnings">₹0</h3>
+                    <p class="mb-0">Total Earnings</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <h3 id="totalSessions">0</h3>
+                    <p class="mb-0">Total Sessions</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="me-2">Status:</span>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input availability-toggle" type="checkbox" id="availabilityToggle" onchange="toggleAvailability()">
+                            <label class="form-check-label" for="availabilityToggle" id="statusLabel">
+                                Offline
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Row -->
+        <div class="row">
+            <!-- Pending Appointments -->
+            <div class="col-lg-8 mb-4">
+                <div class="dashboard-card">
+                    <div class="card-header bg-transparent border-0 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>
+                            My Appointments
+                        </h5>
+                        <button class="btn btn-outline-primary btn-sm" onclick="refreshAppointments()">
+                            <i class="fas fa-refresh me-1"></i>Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Date & Time</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentsTable">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">
+                                            <i class="fas fa-spinner fa-spin me-2"></i>
+                                            Loading appointments...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & Profile -->
+            <div class="col-lg-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="card-header bg-transparent border-0 py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>
+                            Profile Info
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Call Rate</label>
+                            <div class="fw-bold text-primary">₹<span id="callRate">15</span>/min</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chat Rate</label>
+                            <div class="fw-bold text-info">₹<span id="chatRate">10</span>/min</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="fw-bold text-warning">
+                                <i class="fas fa-star"></i>
+                                <span id="rating">4.5</span>/5
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Experience</label>
+                            <div class="fw-bold"><span id="experience">5</span> years</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Sessions -->
+                <div class="dashboard-card">
+                    <div class="card-header bg-transparent border-0 py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-phone me-2"></i>
+                            Active Sessions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="activeSessions">
+                            <p class="text-muted text-center">No active sessions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+    <script>
+        const API_URL = 'http://localhost:9002/api';
+        let currentAstrologer = null;
+
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const bgClass = {
+                'success': 'bg-success',
+                'error': 'bg-danger',
+                'warning': 'bg-warning',
+                'info': 'bg-info'
+            }[type] || 'bg-info';
+            
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `toast align-items-center text-white ${bgClass} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 5000
+            });
+            
+            bsToast.show();
+            
+            toast.addEventListener('hidden.bs.toast', () => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            });
+        }
+
+        // Check astrologer authentication
+        async function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                window.location.href = 'login-working.html';
+                return;
+            }
+
+            try {
+                currentAstrologer = JSON.parse(user);
+                if (!currentAstrologer.isAstrologer) {
+                    showToast('Access denied. Astrologer privileges required.', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                    return;
+                }
+
+                document.getElementById('astrologerName').textContent = currentAstrologer.name;
+                await loadAstrologerData();
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                showToast('Session expired. Please login again.', 'error');
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = 'login-working.html';
+                }, 2000);
+            }
+        }
+
+        // Load astrologer data
+        async function loadAstrologerData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/astrologer/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        const astrologer = data.data;
+                        document.getElementById('totalEarnings').textContent = `₹${astrologer.earnings || 0}`;
+                        document.getElementById('totalSessions').textContent = astrologer.totalSessions || 0;
+                        document.getElementById('callRate').textContent = astrologer.callRate || 15;
+                        document.getElementById('chatRate').textContent = astrologer.chatRate || 10;
+                        document.getElementById('rating').textContent = astrologer.rating || 4.5;
+                        document.getElementById('experience').textContent = astrologer.experience || 5;
+                        
+                        // Set availability toggle
+                        const toggle = document.getElementById('availabilityToggle');
+                        const label = document.getElementById('statusLabel');
+                        toggle.checked = astrologer.isAvailable;
+                        label.textContent = astrologer.isAvailable ? 'Online' : 'Offline';
+                        label.className = astrologer.isAvailable ? 'form-check-label status-online' : 'form-check-label status-offline';
+                    }
+                }
+                
+                await loadMyAppointments();
+            } catch (error) {
+                console.error('Failed to load astrologer data:', error);
+            }
+        }
+
+        // Load astrologer's appointments
+        async function loadMyAppointments() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/appointment/astrologer/${currentAstrologer.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const appointmentsTable = document.getElementById('appointmentsTable');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data && data.data.length > 0) {
+                        appointmentsTable.innerHTML = data.data.map(appointment => `
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">${appointment.userId?.name || 'Unknown User'}</div>
+                                    <small class="text-muted">${appointment.userId?.email || 'No email'}</small>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">${new Date(appointment.datetime).toLocaleDateString()}</div>
+                                    <small class="text-muted">${new Date(appointment.datetime).toLocaleTimeString()}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-${appointment.mode === 'call' ? 'primary' : 'info'}">
+                                        <i class="fas fa-${appointment.mode === 'call' ? 'phone' : 'comments'}"></i>
+                                        ${appointment.mode.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-${appointment.status === 'pending' ? 'warning' : appointment.status === 'accepted' ? 'success' : 'danger'}">
+                                        ${appointment.status.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${appointment.status === 'pending' ? `
+                                        <button class="btn btn-success btn-sm me-1" onclick="updateAppointmentStatus('${appointment._id}', 'accepted')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="updateAppointmentStatus('${appointment._id}', 'rejected')">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    ` : `
+                                        <span class="text-muted">No actions</span>
+                                    `}
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        appointmentsTable.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <i class="fas fa-calendar-times me-2"></i>
+                                    No appointments found
+                                </td>
+                            </tr>
+                        `;
+                    }
+                } else {
+                    throw new Error('Failed to load appointments');
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                document.getElementById('appointmentsTable').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Error loading appointments
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Toggle availability
+        async function toggleAvailability() {
+            try {
+                const token = localStorage.getItem('token');
+                const toggle = document.getElementById('availabilityToggle');
+                const label = document.getElementById('statusLabel');
+                
+                const response = await fetch(`${API_URL}/astrologer/toggle-availability`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        isAvailable: toggle.checked
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    label.textContent = toggle.checked ? 'Online' : 'Offline';
+                    label.className = toggle.checked ? 'form-check-label status-online' : 'form-check-label status-offline';
+                    showToast(`Status updated to ${toggle.checked ? 'Online' : 'Offline'}`, 'success');
+                } else {
+                    // Revert toggle on error
+                    toggle.checked = !toggle.checked;
+                    throw new Error(data.message || 'Failed to update availability');
+                }
+            } catch (error) {
+                console.error('Error updating availability:', error);
+                showToast(error.message || 'Failed to update availability', 'error');
+            }
+        }
+
+        // Update appointment status
+        async function updateAppointmentStatus(appointmentId, status) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/appointment/update-status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        appointmentId: appointmentId,
+                        status: status
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showToast(`Appointment ${status} successfully`, 'success');
+                    await loadMyAppointments();
+                } else {
+                    throw new Error(data.message || `Failed to ${status} appointment`);
+                }
+            } catch (error) {
+                console.error('Error updating appointment:', error);
+                showToast(error.message || 'Failed to update appointment', 'error');
+            }
+        }
+
+        // Refresh appointments
+        function refreshAppointments() {
+            loadMyAppointments();
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.clear();
+            showToast('Logged out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

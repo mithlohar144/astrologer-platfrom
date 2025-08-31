@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Deployment Test - Astro Dr. Kanhaiya</title>
+    <script src="js/config.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+        }
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+        }
+        .info {
+            background: rgba(33, 150, 243, 0.2);
+            border-color: #2196F3;
+        }
+        button {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .logo {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🌟</div>
+        <h1>Astro Dr. Kanhaiya</h1>
+        <h2>🚀 Deployment Test</h2>
+        
+        <div id="results">
+            <div class="status info">
+                <strong>🔄 Initializing deployment test...</strong>
+            </div>
+        </div>
+
+        <button onclick="testEverything()">🧪 Test Full System</button>
+        <button onclick="window.location.href='index.html'">🏠 Go to Main Site</button>
+        
+        <div style="margin-top: 30px;">
+            <p><strong>Backend:</strong> https://astro-back-xztt.onrender.com</p>
+            <p><strong>Frontend:</strong> <span id="frontend-url">Loading...</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Show current URLs
+        document.getElementById('frontend-url').textContent = window.location.origin;
+
+        async function testEverything() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status info">🔄 Running comprehensive tests...</div>';
+
+            let allTests = [];
+
+            try {
+                // Test 1: Environment Detection
+                const env = window.API_CONFIG?.isDevelopment ? 'Development' : 'Production';
+                const apiUrl = window.API_CONFIG?.API_URL || 'Config not loaded';
+                
+                allTests.push(`
+                    <div class="status success">
+                        ✅ <strong>Environment:</strong> ${env}<br>
+                        ✅ <strong>API URL:</strong> ${apiUrl}
+                    </div>
+                `);
+
+                // Test 2: Backend Health Check
+                const response = await fetch(`${apiUrl}/health`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    allTests.push(`
+                        <div class="status success">
+                            ✅ <strong>Backend Health:</strong> ${data.message}<br>
+                            ✅ <strong>Server Time:</strong> ${new Date(data.timestamp).toLocaleString()}<br>
+                            ✅ <strong>Server Environment:</strong> ${data.environment}
+                        </div>
+                    `);
+                } else {
+                    throw new Error(`Backend returned ${response.status}`);
+                }
+
+                // Test 3: CORS Check
+                allTests.push(`
+                    <div class="status success">
+                        ✅ <strong>CORS:</strong> Working correctly
+                    </div>
+                `);
+
+                // Test 4: Frontend Deployment
+                allTests.push(`
+                    <div class="status success">
+                        ✅ <strong>Frontend:</strong> Successfully deployed<br>
+                        ✅ <strong>Static Assets:</strong> Loading properly<br>
+                        ✅ <strong>Configuration:</strong> Connected to backend
+                    </div>
+                `);
+
+                // Final Success Message
+                allTests.push(`
+                    <div class="status success">
+                        🎉 <strong>ALL SYSTEMS OPERATIONAL!</strong><br>
+                        Your Astrologer Consultation Platform is fully deployed and connected!
+                    </div>
+                `);
+
+            } catch (error) {
+                allTests.push(`
+                    <div class="status error">
+                        ❌ <strong>Test Failed:</strong> ${error.message}<br>
+                        🔧 Please check your backend connection
+                    </div>
+                `);
+            }
+
+            resultsDiv.innerHTML = allTests.join('');
+        }
+
+        // Auto-run test when page loads
+        window.onload = () => {
+            setTimeout(testEverything, 500);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings - Stellarium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/navbar-utils.js"></script>
+    <script>
+        const API_URL = 'http://localhost:9002/api';
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .settings-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        
+        .settings-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .settings-header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .settings-body {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-update {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h6 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box p {
+            color: #856404;
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .current-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .info-value {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Back Button -->
+    <button class="btn btn-light back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </button>
+
+    <div class="settings-container">
+        <div class="settings-card">
+            <!-- Settings Header -->
+            <div class="settings-header">
+                <i class="fas fa-user-shield" style="font-size: 60px; margin-bottom: 20px;"></i>
+                <h2>Admin Settings</h2>
+                <p>Update admin credentials and system settings</p>
+            </div>
+
+            <!-- Settings Body -->
+            <div class="settings-body">
+                <!-- Current Admin Info -->
+                <div class="current-info">
+                    <h5><i class="fas fa-info-circle me-2"></i>Current Admin Information</h5>
+                    <div class="info-item">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value" id="currentName">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value" id="currentEmail">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Contact:</span>
+                        <span class="info-value" id="currentContact">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Login:</span>
+                        <span class="info-value" id="lastLogin">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Security Notice</h6>
+                    <p>Changing admin credentials will require you to log in again with the new credentials. Make sure to remember your new password. Only the main admin can update these settings.</p>
+                </div>
+
+                <!-- Update Form -->
+                <form id="adminUpdateForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="newName" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Admin Name
+                                </label>
+                                <input type="text" id="newName" class="form-control" placeholder="Enter new admin name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="newEmail" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>Admin Email
+                                </label>
+                                <input type="email" id="newEmail" class="form-control" placeholder="Enter new admin email">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="newContact" class="form-label">
+                                    <i class="fas fa-phone me-2"></i>Contact Number
+                                </label>
+                                <input type="tel" id="newContact" class="form-control" placeholder="Enter new contact number">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="currentPassword" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Current Password
+                                </label>
+                                <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="newPassword" class="form-label">
+                                    <i class="fas fa-key me-2"></i>New Password
+                                </label>
+                                <input type="password" id="newPassword" class="form-control" placeholder="Enter new password (optional)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">
+                                    <i class="fas fa-key me-2"></i>Confirm New Password
+                                </label>
+                                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-update">
+                        <i class="fas fa-save me-2"></i>Update Admin Credentials
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAdminAuthAndLoadData();
+            setupEventListeners();
+        });
+
+        function checkAdminAuthAndLoadData() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            if (!token || !user.isAdmin) {
+                showToast('Access denied. Admin privileges required.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                return;
+            }
+            
+            loadCurrentAdminData();
+            hidePreloader();
+        }
+
+        function setupEventListeners() {
+            // Form submission
+            document.getElementById('adminUpdateForm').addEventListener('submit', handleFormSubmit);
+            
+            // Password confirmation validation
+            document.getElementById('confirmPassword').addEventListener('input', validatePasswordConfirmation);
+        }
+
+        async function loadCurrentAdminData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const user = data.data.user;
+                    
+                    document.getElementById('currentName').textContent = user.name;
+                    document.getElementById('currentEmail').textContent = user.email;
+                    document.getElementById('currentContact').textContent = user.contact;
+                    document.getElementById('lastLogin').textContent = new Date(user.lastLogin).toLocaleString();
+                    
+                    // Pre-fill form with current data
+                    document.getElementById('newName').value = user.name;
+                    document.getElementById('newEmail').value = user.email;
+                    document.getElementById('newContact').value = user.contact;
+                }
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+                showToast('Error loading admin data', 'error');
+            }
+        }
+
+        function validatePasswordConfirmation() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmField = document.getElementById('confirmPassword');
+            
+            if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+                confirmField.setCustomValidity('Passwords do not match');
+                confirmField.classList.add('is-invalid');
+            } else {
+                confirmField.setCustomValidity('');
+                confirmField.classList.remove('is-invalid');
+            }
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('newName').value.trim(),
+                email: document.getElementById('newEmail').value.trim(),
+                contact: document.getElementById('newContact').value.trim(),
+                currentPassword: document.getElementById('currentPassword').value,
+                newPassword: document.getElementById('newPassword').value
+            };
+
+            // Validation
+            if (!formData.name || !formData.email || !formData.contact || !formData.currentPassword) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (formData.newPassword && formData.newPassword !== document.getElementById('confirmPassword').value) {
+                showToast('New passwords do not match', 'error');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+
+            try {
+                await updateAdminCredentials(formData);
+            } catch (error) {
+                console.error('Update error:', error);
+                showToast('Failed to update credentials: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        async function updateAdminCredentials(formData) {
+            const token = localStorage.getItem('token');
+            
+            const response = await fetch(`${API_URL}/admin/update`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('Admin credentials updated successfully!', 'success');
+                
+                // Update localStorage with new user data
+                if (data.data && data.data.user) {
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                }
+                
+                // If password was changed, redirect to login
+                if (formData.newPassword) {
+                    showToast('Password changed. Please log in again.', 'info');
+                    setTimeout(() => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.href = 'login-working.html';
+                    }, 3000);
+                } else {
+                    // Reload current data
+                    setTimeout(() => {
+                        loadCurrentAdminData();
+                        document.getElementById('currentPassword').value = '';
+                        document.getElementById('newPassword').value = '';
+                        document.getElementById('confirmPassword').value = '';
+                    }, 1000);
+                }
+            } else {
+                throw new Error(data.message || 'Failed to update credentials');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'admin-dashboard.html';
+        }
+
+        function hidePreloader() {
+            const preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'info'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+
+            // Add to page
+            let toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remove after hiding
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Project CSS/JS to match existing dashboard design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/navbar-utils.js"></script>
+    <script src="js/config.js"></script>
+
+    <style>
+      /* Hide this page's old Tailwind header to use unified sidebar */
+      .group\/design-root > .layout-container > header { display: none !important; }
+
+      /* Sidebar + off-canvas (match user-profile) */
+      .dashboard-layout { display: flex; gap: 24px; padding: 16px; max-width: 1200px; margin: 0 auto; }
+      .sidebar { width: 260px; background:#fff; border:1px solid #eef1f7; border-radius:16px; box-shadow:0 10px 25px rgba(31,45,61,0.06); padding:16px; height: 100%; }
+      .sidebar .user-block { display:flex; align-items:center; gap:12px; padding:8px 8px 16px; border-bottom:1px solid #eef1f7; }
+      .sidebar .avatar { width:40px; height:40px; border-radius:50%; background:#e9ecfb; display:flex; align-items:center; justify-content:center; font-weight:700; color:#556cd6; }
+      .sidebar .menu { list-style:none; padding:0; margin:12px 0 0; }
+      .sidebar .menu li a { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:#324a6d; text-decoration:none; }
+      .sidebar .menu li a:hover, .sidebar .menu li a.active { background:#eef1f7; }
+      .sidebar .menu i { width:18px; text-align:center; color:#556cd6; }
+      .dashboard-content { flex:1; background:#fff; border:1px solid #eef1f7; border-radius:16px; padding:16px; box-shadow:0 10px 25px rgba(31,45,61,0.06); }
+      .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+      .menu-btn { border:1px solid #e6ecf6; background:#fff; border-radius:10px; padding:8px 12px; color:#22314a; box-shadow:0 6px 14px rgba(31,45,61,0.06); }
+      .sidebar-overlay { position: fixed; inset: 0; background: rgba(17,24,39,0.35); backdrop-filter: blur(1px); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 1040; }
+      .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (max-width: 768px) {
+        .dashboard-layout { flex-direction: column; padding: 12px; }
+        .sidebar { width: 88%; max-width: 320px; position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-105%); transition: transform .22s ease; z-index: 1050; border-radius: 0 16px 16px 0; }
+        .sidebar.open { transform: translateX(0); }
+      }
+
+      /* Back button in topbar */
+      .back-btn { box-shadow: 0 8px 24px rgba(31,45,61,0.12); border: none; border-radius:10px; }
+    </style>
+  </head>
+  <body>
+    <!-- Off-canvas sidebar + overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="dashboard-layout">
+      <aside class="sidebar">
+        <div class="user-block">
+          <div class="avatar"><span id="avatar-initials">U</span></div>
+          <div>
+            <div id="user-name" style="font-weight:700; color:#22314a;">Account</div>
+            <div id="user-email" class="text-muted" style="font-size: 12px;">Loading...</div>
+          </div>
+        </div>
+        <ul class="menu">
+          <li><a href="user-profile.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="wallet-recharge.html"><i class="fas fa-wallet"></i> Wallet</a></li>
+          <li><a href="session.html"><i class="fas fa-phone"></i> Call/Chat</a></li>
+          <li><a class="active" href="appointments.html"><i class="fas fa-calendar-alt"></i> Appointments</a></li>
+          <!-- <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li> -->
+          <li><a href="#" onclick="startEditProfile && startEditProfile(); return false;"><i class="fas fa-cog"></i> Settings/Profile</a></li>
+        </ul>
+      </aside>
+      <main class="dashboard-content" id="main-content">
+        <div class="topbar">
+          <div class="d-flex align-items-center gap-2">
+            <button class="menu-btn d-inline-flex align-items-center gap-2 d-md-none" onclick="toggleSidebar()">
+              <i class="fas fa-bars"></i>
+              <span>Menu</span>
+            </button>
+            <h1 class="ms-1 ms-md-0 h4 mb-0">Appointments</h1>
+          </div>
+          <div>
+            <button class="btn btn-light back-btn d-none d-md-inline-flex align-items-center" onclick="goBack()">
+              <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </button>
+          </div>
+        </div>
+        <!-- The Tailwind section below remains as the page content -->
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+      style="--select-button-svg: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(73,115,156)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e'); font-family: Inter, &quot;Noto Sans&quot;, sans-serif;"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+          <div class="flex items-center gap-4 text-[#0d141c]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">Cosmic Insights</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Daily Horoscope</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Live</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Talk to Astrologer</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Reports</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Kundli</a>
+            </div>
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#e7edf4] text-[#0d141c] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#0d141c]" data-icon="Bell" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVclZk-33x3Eo5QDgZ-ZceLryMHjfqtrCGgvd3m36LlSEkQ-N7XZWuztioiIy_ZKOer06WNW6XaMYkSVFbVRul7DppGDN_9Spam5wAKD3165BmKAjtWcAvt8HnJGexuhRDm7oKQxm-cKa2ovogAQPDJzcmJjSbDyYKX8XjVJPlP5zX-4ZiQP7TgBaXykmtlpM2G3qUa2oMCQGZyljqPIuvB_51G3gq7TwLL5IkHlSvR03944NuwjYXYLCNqpreVgBBk7bS-TZafwU");'
+            ></div>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight">Appointments</p>
+                <p class="text-[#49739c] text-sm font-normal leading-normal">Book an appointment with our expert astrologers for personalized guidance.</p>
+              </div>
+            </div>
+            <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Book an Appointment</h3>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <select
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 bg-[image:--select-button-svg] placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                >
+                  <option value="one"></option>
+                  <option value="two">two</option>
+                  <option value="three">three</option>
+                </select>
+              </label>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-6 p-4">
+              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
+                <div class="flex items-center p-1 justify-between">
+                  <button>
+                    <div class="text-[#0d141c] flex size-10 items-center justify-center" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                      </svg>
+                    </div>
+                  </button>
+                  <p class="text-[#0d141c] text-base font-bold leading-tight flex-1 text-center pr-10">July 2024</p>
+                </div>
+                <div class="grid grid-cols-7">
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <button class="h-12 w-full text-[#0d141c] col-start-4 text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">1</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">2</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">3</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">4</div>
+                  </button>
+                  <button class="h-12 w-full text-slate-50 text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full bg-[#0d80f2]">5</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">6</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">7</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">8</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">9</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">10</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">11</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">12</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">13</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">14</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">15</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">16</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">17</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">18</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">19</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">20</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">21</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">22</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">23</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">24</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">25</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">26</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">27</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">28</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">29</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">30</div>
+                  </button>
+                </div>
+              </div>
+              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
+                <div class="flex items-center p-1 justify-between">
+                  <p class="text-[#0d141c] text-base font-bold leading-tight flex-1 text-center pl-10">August 2024</p>
+                  <button>
+                    <div class="text-[#0d141c] flex size-10 items-center justify-center" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <div class="grid grid-cols-7">
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
+                  <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
+                  <button class="h-12 w-full text-[#0d141c] col-start-4 text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">1</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">2</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">3</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">4</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">5</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">6</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">7</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">8</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">9</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">10</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">11</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">12</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">13</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">14</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">15</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">16</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">17</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">18</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">19</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">20</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">21</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">22</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">23</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">24</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">25</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">26</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">27</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">28</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">29</div>
+                  </button>
+                  <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
+                    <div class="flex size-full items-center justify-center rounded-full">30</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <select
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 bg-[image:--select-button-svg] placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                >
+                  <option value="one"></option>
+                  <option value="two">two</option>
+                  <option value="three">three</option>
+                </select>
+              </label>
+            </div>
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Confirm Booking</span>
+              </button>
+            </div>
+            <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Upcoming Appointments</h3>
+            <div class="flex flex-col px-4 py-6">
+              <div class="flex flex-col items-center gap-6">
+                <div
+                  class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-full max-w-[360px]"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuIV6FBUyXALCtaALm92-zntlFECgXK3n_LXk9xkeTxpsrN-p8YLREr6dO677qkX4_NxRvPv1f8oXOo798cMc5FtgBN6e5eFaN7TS78zkgV3BefyXHPXBiWHJW5uARMKc8LMhBbjvheRrDcYW7ISv5gzFMnGDZ0DXcHxpD5aULLheaWe0qhUnyfRvJ_tncmShBjypADab2pDN7YrEYzZ_x4lEufQtplKVBv11ugFb16wBuYwEdHnlxAPu7h-HkKO2ssZ6IhoMIDFs");'
+                ></div>
+                <div class="flex max-w-[480px] flex-col items-center gap-2">
+                  <p class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">No Upcoming Appointments</p>
+                  <p class="text-[#0d141c] text-sm font-normal leading-normal max-w-[480px] text-center">You don't have any appointments scheduled. Book one now to get started.</p>
+                </div>
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]"
+                >
+                  <span class="truncate">Book Appointment</span>
+                </button>
+              </div>
+            </div>
+            <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Past Appointments</h3>
+            <div class="flex flex-col px-4 py-6">
+              <div class="flex flex-col items-center gap-6">
+                <div
+                  class="bg-center bg-no-repeat aspect-video bg-cover rounded-lg w-full max-w-[360px]"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPRskf6vfVakqgzEaPiODSbU1Kfbkx19ZT4YwOLUDFgFa5QEadDpVvJTtyL1x_ZWaaq8vNZ_fSdx_IBedzTR4tIwqEDCX3-l9OkwHqtzLFnumqd4d623jHiNQmaD8N1gnFiy2-yZTPk_Lw9_FzLeyFiZmIUIoPsuC-TuuP7-ijKguw4cRHGYBXotPvM3W0GQh7Rm8defvHdizpCahUMcIMAcHK9vKlITI4puJTmVeUbE-pCwggyakb7Bap00QVuu2hjvtGLTOdTQY");'
+                ></div>
+                <div class="flex max-w-[480px] flex-col items-center gap-2">
+                  <p class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">No Past Appointments</p>
+                  <p class="text-[#0d141c] text-sm font-normal leading-normal max-w-[480px] text-center">You haven't had any appointments yet. Book one now to get started.</p>
+                </div>
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]"
+                >
+                  <span class="truncate">Book Appointment</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        </main>
+      </div>
+    <script>
+      // Populate sidebar user info from localStorage (match user-profile)
+      function getInitials(nameOrEmail) {
+        if (!nameOrEmail) return 'U';
+        const str = String(nameOrEmail).trim();
+        if (str.includes(' ')) { const parts = str.split(/\s+/).slice(0, 2); return parts.map(p => p[0]).join('').toUpperCase(); }
+        if (str.includes('@')) return str[0].toUpperCase();
+        return str.slice(0, 2).toUpperCase();
+      }
+      function setAvatarInitials(text) {
+        const el = document.getElementById('avatar-initials');
+        if (el) el.textContent = getInitials(text);
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (user) {
+          const nameEl = document.getElementById('user-name');
+          const emailEl = document.getElementById('user-email');
+          if (nameEl) nameEl.textContent = user.name || 'User';
+          if (emailEl) emailEl.textContent = user.email || '';
+          setAvatarInitials(user.name || user.email || 'U');
+        }
+      });
+
+      // Sidebar controls (match user-profile behavior)
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+      function toggleSidebar() {
+        if (!sidebar) return;
+        if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
+      }
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
+
+      // Back navigation
+      function goBack() {
+        window.location.href = 'index.html';
+      }
+    </script>
+  </body>
+</html>

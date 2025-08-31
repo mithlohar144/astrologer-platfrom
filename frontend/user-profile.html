@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Astrology Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Calendly widget resources -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <style>
+        body {
+            background: linear-gradient(180deg, #f6f7fb 0%, #eef1f7 100%);
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .profile-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        
+        .profile-card {
+            background: #ffffff;
+            border-radius: 22px;
+            box-shadow: 0 20px 45px rgba(31,45,61,0.08);
+            border: 1px solid #eef1f7;
+            overflow: hidden;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 48px 40px 36px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255,255,255,0.35);
+        }
+        
+        .profile-body {
+            padding: 28px 40px 36px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #eef1f7;
+        }
+        .info-item:hover {
+            background: linear-gradient(90deg, rgba(238,241,247,0.4) 0%, rgba(238,241,247,0) 100%);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #344767;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-label i {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(102,126,234,0.12);
+            color: #556cd6 !important;
+        }
+        
+        .info-value {
+            color: #495057;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-yes {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .wallet-balance {
+            font-size: 22px;
+            font-weight: 800;
+            color: #28a745;
+        }
+        .section-title {
+            font-weight: 700;
+            color: #28354a;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .loading-spinner {
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(31,45,61,0.12);
+            border: none;
+        }
+
+        /* Accessibility & focus states */
+        .btn:focus-visible, a.btn:focus-visible {
+            outline: 3px solid rgba(102,126,234,0.45);
+            outline-offset: 2px;
+        }
+
+        /* Subtle appearance animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate3d(0, 10px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        .fade-in { animation: fadeInUp 420ms ease-out both; }
+
+        /* Dashboard layout */
+        .dashboard-layout { display: flex; gap: 24px; }
+        .sidebar {
+            width: 260px;
+            background: #fff;
+            border: 1px solid #eef1f7;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(31,45,61,0.06);
+            padding: 16px;
+            height: 100%;
+        }
+        .sidebar .user-block { display: flex; align-items: center; gap: 12px; padding: 8px 8px 16px; border-bottom: 1px solid #eef1f7; }
+        .sidebar .avatar { width: 40px; height: 40px; border-radius: 50%; background: #e9ecfb; display:flex; align-items:center; justify-content:center; font-weight:700; color:#556cd6; }
+        .sidebar .menu { list-style: none; margin: 12px 0 0; padding: 0; }
+        .sidebar .menu li a { display:flex; align-items:center; gap: 10px; padding: 10px 12px; border-radius: 10px; color:#324a6d; text-decoration:none; }
+        .sidebar .menu li a:hover, .sidebar .menu li a.active { background:#eef1f7; }
+        .sidebar .menu i { width: 18px; text-align:center; color:#556cd6; }
+
+        .dashboard-content { flex:1; }
+        .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
+        .topbar h1 { font-size: 28px; margin: 0; color:#22314a; }
+
+        .card-lite { background:#fff; border:1px solid #eef1f7; border-radius:16px; padding:16px; box-shadow:0 10px 25px rgba(31,45,61,0.06); }
+        .wallet-row { display:flex; align-items:center; justify-content:space-between; }
+        .wallet-amount { font-size: 24px; font-weight: 800; }
+        .muted { color:#6b7b93; font-size: 14px; }
+        .stats-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px; }
+        .stat-card h6 { color:#6b7b93; margin-bottom:6px; font-weight:600; }
+        .stat-card .value { font-size: 20px; font-weight: 800; color:#22314a; }
+
+        @media (max-width: 992px) { .stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+        /* Off-canvas behavior */
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(17,24,39,0.35); backdrop-filter: blur(1px); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 1040; }
+        .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+        .menu-btn { border: 1px solid #e6ecf6; background:#fff; border-radius: 10px; padding:8px 12px; color:#22314a; box-shadow:0 6px 14px rgba(31,45,61,0.06); }
+        .menu-btn:focus { outline: 2px solid #99a7ff; outline-offset: 2px; }
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 88%; max-width: 320px; position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-105%); transition: transform .22s ease; z-index: 1050; border-radius: 0 16px 16px 0; }
+            .sidebar.open { transform: translateX(0); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 576px) {
+            .profile-container { margin: 24px auto; padding: 0 16px; }
+            .profile-header { padding: 0; }
+            .profile-body { padding: 0; }
+            .profile-avatar { width: 40px; height: 40px; font-size: 16px; }
+            .info-label i { width: 32px; height: 32px; }
+            .wallet-balance { font-size: 20px; }
+            .mt-4.d-grid.d-sm-flex.gap-2 .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="btn btn-light back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </button>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <div class="profile-container">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <div class="dashboard-layout fade-in">
+            <aside class="sidebar">
+                <div class="user-block">
+                    <div class="avatar"><span id="avatar-initials">U</span></div>
+                    <div>
+                        <div id="user-name" style="font-weight:700; color:#22314a;">Loading...</div>
+                        <div id="user-email" class="muted">Loading...</div>
+                    </div>
+                </div>
+                <ul class="menu">
+                    <li><a class="active" href="#" onclick="return false;"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="wallet-recharge.html"><i class="fas fa-wallet"></i> Wallet</a></li>
+                    <li><a href="session.html"><i class="fas fa-phone"></i> Call/Chat</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-alt"></i> Appointments</a></li>
+                    <!-- <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li> -->
+                    <li><a href="#" onclick="startEditProfile(); return false;"><i class="fas fa-cog"></i> Settings/Profile</a></li>
+                </ul>
+            </aside>
+            <main class="dashboard-content" id="main-content">
+                <div class="topbar d-flex align-items-center justify-content-between">
+                    <button class="menu-btn d-inline-flex align-items-center gap-2 d-md-none" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu</span>
+                    </button>
+                </div>
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Loading your dashboard...</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <!-- Toasts will be dynamically added here -->
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        const API_URL = 'http://localhost:9000/api';
+
+        // Currency: INR formatting helper (top-level)
+        function formatINR(value) {
+            try {
+                const num = Number(value) || 0;
+                return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+            } catch (e) {
+                return `₹${value}`;
+            }
+        }
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthAndLoadProfile();
+        });
+
+        function checkAuthAndLoadProfile() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id) {
+                showToast('Please login to view your profile', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'login-working.html';
+                }, 2000);
+                return;
+            }
+            loadUserProfile();
+        }
+
+        async function loadUserProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+                // Show basic info from localStorage first
+                document.getElementById('user-name').textContent = user.name || 'User';
+                document.getElementById('user-email').textContent = user.email || 'No email';
+                setAvatarInitials(user.name || user.email || 'U');
+
+                // Ensure backend is reachable before proceeding
+                const backendOk = await checkBackendHealth();
+                if (!backendOk) {
+                    throw new Error(`Cannot reach backend at ${API_URL}. Please make sure the server is running.`);
+                }
+
+                // Fetch complete user data from backend
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile data');
+                }
+
+                const result = await response.json();
+                const userData = (result && result.data && (result.data.user || result.data)) || null;
+                
+                if (result.success && userData) {
+                    renderDashboard(userData);
+                    setAvatarInitials(userData.name || userData.email || 'U');
+                } else {
+                    throw new Error(result.message || 'Failed to load profile');
+                }
+
+            } catch (error) {
+                console.error('Profile loading error:', error);
+                displayError(error.message);
+            } finally {
+                hidePreloader();
+            }
+        }
+
+        // Check backend /health with a short timeout
+        async function checkBackendHealth() {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            try {
+                const res = await fetch(`${API_URL}/health`, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                return res.ok;
+            } catch (e) {
+                clearTimeout(timeoutId);
+                return false;
+            }
+        }
+
+        function setAvatarInitials(text) {
+            const el = document.getElementById('avatar-initials');
+            if (!el) return;
+            const initials = getInitials(text);
+            el.textContent = initials;
+        }
+
+        function getInitials(nameOrEmail) {
+            if (!nameOrEmail) return 'U';
+            const str = String(nameOrEmail).trim();
+            if (str.includes(' ')) {
+                const parts = str.split(/\s+/).slice(0, 2);
+                return parts.map(p => p[0]).join('').toUpperCase();
+            }
+            if (str.includes('@')) return str[0].toUpperCase();
+            return str.slice(0, 2).toUpperCase();
+        }
+
+        function renderDashboard(userData) {
+            // Update sidebar header
+            document.getElementById('user-name').textContent = userData.name;
+            document.getElementById('user-email').textContent = userData.email;
+
+            const freeTrialLeft = (!userData.firstCallUsed || !userData.firstChatUsed) ? '5 min left' : '0 min left';
+            const main = document.getElementById('main-content');
+            main.innerHTML = `
+                <div class="topbar">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="menu-btn d-inline-flex align-items-center gap-2 d-md-none" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
+                            <span>Menu</span>
+                        </button>
+                        <h1 class="ms-1 ms-md-0">Dashboard</h1>
+                    </div>
+                </div>
+
+                <section class="card-lite mb-3">
+                    <div class="wallet-row">
+                        <div>
+                            <div class="muted">Wallet</div>
+                            <div class="wallet-amount">${formatINR(userData.walletBalance || 0)}</div>
+                            <div class="muted">Available balance</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-danger btn-sm" onclick="openWithdrawModal(${Number(userData.walletBalance||0)})"><i class="fas fa-money-bill-transfer me-1"></i>Withdraw</button>
+                            <a href="wallet-recharge.html" class="btn btn-outline-secondary btn-sm">Add Money</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-3">
+                    <div class="muted mb-2" style="font-weight:700; color:#22314a;">Quick Actions</div>
+                    <div class="quick-actions d-flex gap-2">
+                        <a class="btn btn-primary" href="chat.html"><i class="fas fa-comments me-2"></i>Start Chat</a>
+                        
+                        <button type="button" class="btn btn-primary" onclick="openCalendly()" aria-label="Request for Callback via Calendly"><i class="fas fa-phone me-2"></i>Request for Callback</button>
+                        <button class="btn btn-outline-primary" onclick="startEditProfile()"><i class="fas fa-user-cog me-2"></i>Edit Profile</button>
+                    </div>
+                </section>
+
+                <section class="stats-grid">
+                    <div class="card-lite stat-card">
+                        <h6>Free Trial Usage</h6>
+                        <div class="value">${freeTrialLeft}</div>
+                    </div>
+                    <div class="card-lite stat-card">
+                        <h6>Last Call/Chat</h6>
+                        <div class="value">—</div>
+                    </div>
+                    <div class="card-lite stat-card">
+                        <h6>Upcoming Appointments</h6>
+                        <div class="value">—</div>
+                    </div>
+                </section>
+
+                <div class="text-start mt-4">
+                    <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                </div>
+            `;
+        }
+
+        // Edit profile flow
+        function startEditProfile() {
+            const name = document.getElementById('user-name').textContent || '';
+            const email = document.getElementById('user-email').textContent || '';
+            const stored = JSON.parse(localStorage.getItem('user') || '{}');
+            const contact = stored.contact || '';
+
+            const main = document.getElementById('main-content');
+            main.innerHTML = `
+                <div class="section-title">Edit Profile</div>
+                <form id="editProfileForm" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="editName" value="${name}" minlength="2" required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Email (read-only)</label>
+                        <input type="email" class="form-control" id="editEmail" value="${email}" readonly />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Contact</label>
+                        <input type="tel" class="form-control" id="editContact" value="${contact}" pattern="^[0-9]{10}$" placeholder="10-digit number" required />
+                        <div class="form-text">Use a 10-digit phone number.</div>
+                    </div>
+                    <div class="col-12 d-grid d-sm-flex gap-2 mt-2">
+                        <button type="button" class="btn btn-primary flex-fill" onclick="saveProfile()"><i class="fas fa-save me-2"></i>Save Changes</button>
+                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="cancelEditProfile()"><i class="fas fa-times me-2"></i>Cancel</button>
+                    </div>
+                </form>
+            `;
+        }
+
+        function cancelEditProfile() {
+            // Reload to dashboard view with current data
+            loadUserProfile();
+        }
+
+        async function saveProfile() {
+            const name = document.getElementById('editName').value.trim();
+            const contact = document.getElementById('editContact').value.trim();
+            if (name.length < 2) {
+                showToast('Name must be at least 2 characters', 'warning');
+                return;
+            }
+            if (!/^[0-9]{10}$/.test(contact)) {
+                showToast('Contact must be a valid 10-digit number', 'warning');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            try {
+                const resp = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, contact })
+                });
+                const data = await resp.json();
+                if (!resp.ok || !data.success) throw new Error(data.message || 'Failed to update profile');
+
+                // Update header, localStorage user and rerender
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                user.name = name;
+                user.contact = contact;
+                localStorage.setItem('user', JSON.stringify(user));
+
+                showToast('Profile updated successfully', 'success');
+                loadUserProfile();
+            } catch (e) {
+                console.error('Save profile error:', e);
+                showToast(e.message || 'Error updating profile', 'error');
+            }
+        }
+
+        // Sidebar controls
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        function openSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.add('open');
+            if (overlay) overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        function toggleSidebar() {
+            if (!sidebar) return;
+            if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
+        }
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
+
+        // Withdraw flow
+        function openWithdrawModal(balance = 0) {
+            const main = document.getElementById('main-content');
+            if (!main) return;
+            const id = 'withdraw-modal-' + Date.now();
+            const el = document.createElement('div');
+            el.id = id;
+            el.innerHTML = `
+                <div class="modal fade show" style="display:block; background: rgba(0,0,0,0.35);" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-money-bill-transfer me-2"></i>Withdraw Funds</h5>
+                        <button type="button" class="btn-close" aria-label="Close" onclick="closeWithdrawModal('${id}')"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-2 text-muted">Available: <strong>${formatINR(balance||0)}</strong></div>
+                        <div class="mb-3">
+                          <label class="form-label">Amount</label>
+                          <input type="number" class="form-control" id="wd-amount" min="1" step="1" placeholder="Enter amount in INR" />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Method</label>
+                          <select class="form-select" id="wd-method" onchange="toggleWithdrawMethod()">
+                            <option value="upi">UPI</option>
+                            <option value="bank">Bank Transfer</option>
+                          </select>
+                        </div>
+                        <div id="wd-upi" class="mb-3">
+                          <label class="form-label">UPI ID</label>
+                          <input type="text" class="form-control" id="wd-upi-id" placeholder="e.g. username@bank" />
+                        </div>
+                        <div id="wd-bank" class="mb-1" style="display:none;">
+                          <div class="row g-2">
+                            <div class="col-12"><input class="form-control" id="wd-bank-name" placeholder="Bank name" /></div>
+                            <div class="col-12"><input class="form-control" id="wd-account-holder" placeholder="Account holder name" /></div>
+                            <div class="col-6"><input class="form-control" id="wd-account-number" placeholder="Account number" /></div>
+                            <div class="col-6"><input class="form-control" id="wd-ifsc" placeholder="IFSC" /></div>
+                          </div>
+                        </div>
+                        <small class="text-muted">Note: Withdrawals may take up to 24-48 hours to process.</small>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" onclick="closeWithdrawModal('${id}')">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitWithdrawRequest(${Number(balance||0)}, '${id}')">Submit Request</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>`;
+            document.body.appendChild(el);
+        }
+
+        function closeWithdrawModal(id){
+            const el = document.getElementById(id);
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+        }
+
+        function toggleWithdrawMethod(){
+            const method = document.getElementById('wd-method')?.value;
+            const upi = document.getElementById('wd-upi');
+            const bank = document.getElementById('wd-bank');
+            if (method === 'bank') { if (upi) upi.style.display = 'none'; if (bank) bank.style.display = ''; }
+            else { if (upi) upi.style.display = ''; if (bank) bank.style.display = 'none'; }
+        }
+
+        async function submitWithdrawRequest(availableBalance, modalId){
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) { showToast('Please login first', 'warning'); return; }
+                const amount = parseInt(document.getElementById('wd-amount').value, 10) || 0;
+                const method = document.getElementById('wd-method').value;
+                const upiId = (document.getElementById('wd-upi-id')?.value || '').trim();
+                const bankDetails = {
+                    bankName: (document.getElementById('wd-bank-name')?.value || '').trim(),
+                    accountNumber: (document.getElementById('wd-account-number')?.value || '').trim(),
+                    ifsc: (document.getElementById('wd-ifsc')?.value || '').trim(),
+                    accountHolder: (document.getElementById('wd-account-holder')?.value || '').trim()
+                };
+
+                if (!amount || amount < 1) { showToast('Enter a valid amount', 'warning'); return; }
+                if (amount > Number(availableBalance||0)) { showToast('Amount exceeds available balance', 'warning'); return; }
+                if (method === 'upi' && !upiId) { showToast('Enter a valid UPI ID', 'warning'); return; }
+                if (method === 'bank' && (!bankDetails.bankName || !bankDetails.accountNumber || !bankDetails.ifsc || !bankDetails.accountHolder)) {
+                    showToast('Fill all bank details', 'warning'); return;
+                }
+
+                // Attempt to call a wallet withdraw API if available
+                const payload = { amount, method, upiId: method==='upi'?upiId:undefined, bankDetails: method==='bank'?bankDetails:undefined };
+                let res;
+                try {
+                    res = await fetch(`${API_URL}/wallet/withdraw`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                } catch (networkErr) {
+                    // Network error
+                    displayError('Failed to reach server. Please ensure backend is running.');
+                    return;
+                }
+
+                if (res.ok) {
+                    const data = await res.json();
+                    showToast(data.message || 'Withdrawal request submitted', 'success');
+                    closeWithdrawModal(modalId);
+                    // Refresh profile to update balance/history
+                    loadUserProfile();
+                } else if (res.status === 404) {
+                    closeWithdrawModal(modalId);
+                    showToast('Withdraw endpoint not available. Backend route /api/wallet/withdraw is missing.', 'warning');
+                } else {
+                    const err = await res.json().catch(()=>({message:'Failed to submit withdrawal'}));
+                    showToast(err.message || 'Failed to submit withdrawal', 'error');
+                }
+            } catch (e) {
+                console.error('submitWithdrawRequest error:', e);
+                showToast('Unexpected error. Please try again.', 'error');
+            }
+        }
+
+        function displayError(message) {
+            const main = document.getElementById('main-content');
+            if (!main) return;
+            main.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h5>Error Loading Profile</h5>
+                    <p>${message || 'Something went wrong.'}</p>
+                    <button class="btn btn-primary" onclick="loadUserProfile()">
+                        <i class="fas fa-rotate-right"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function hidePreloader() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const bgClass = {
+                'success': 'bg-success',
+                'error': 'bg-danger',
+                'warning': 'bg-warning',
+                'info': 'bg-info'
+            }[type] || 'bg-info';
+            
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `toast align-items-center text-white ${bgClass} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 5000
+            });
+            
+            bsToast.show();
+            
+            // Clean up after toast is hidden
+            toast.addEventListener('hidden.bs.toast', () => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            });
+        }
+
+        // Calendly popup trigger
+        function openCalendly() {
+            const url = 'https://calendly.com/bitvallysoftwere/new-meeting';
+            if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+                Calendly.initPopupWidget({ url });
+                return false;
+            }
+            // Fallback: open in new tab if widget not loaded yet
+            window.open(url, '_blank', 'noopener');
+            return false;
+        }
+    </script>
+</body>
+</html>

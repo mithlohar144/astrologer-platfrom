@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellarium - Astrology & Horoscopes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+        
+        <nav style="background: #020024;
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, rgba(4, 4, 71, 1) 81%, rgba(2, 0, 36, 1) 100%);">
+            <div class="logo">
+                <span class="icon">K</span> ASTRO DR. KANHAIYA
+            </div>
+            <div class="hamburger-menu">
+                <span class="media">
+                    <i class="fa-solid fa-xmark" style="display: none;"></i>
+                    <i class="fa-solid fa-bars"></i>
+                </span>
+            </div>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#service">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+                <div id="auth-buttons" class="auth-buttons" style="display: flex; gap: 10px; align-items: center;">
+                    <!-- Login/Register buttons (shown when not logged in) -->
+                    <button id="loginBtn" class="btn btn-outline-light login-btn" onclick="window.location.href='./login-working.html'">Login</button>
+                    <button id="registerBtn" class="btn btn-light signup-btn" onclick="window.location.href='./register-working.html'">Sign Up</button>
+                    
+                    <!-- User menu (shown when logged in) -->
+                    <div id="userMenu" class="dropdown" style="display: none;">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i><span id="userName">User</span> <i class="fas fa-caret-down ms-1"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="user-profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+                            <li><a class="dropdown-item" href="wallet-recharge.html"><i class="fas fa-wallet me-2"></i>My Wallet</a></li>
+                            <li><a class="dropdown-item" href="session.html"><i class="fas fa-video me-2"></i>Start Session</a></li>
+                            <li><a class="dropdown-item" href="call-history.html"><i class="fas fa-history me-2"></i>Call History</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Admin button (shown for admin users) -->
+                    <button id="adminBtn" class="btn btn-warning" onclick="window.location.href='admin-dashboard.html'" style="display: none;">
+                        <i class="fas fa-crown me-2"></i>Admin Panel
+                    </button>
+                </div>
+                <div class="whatsapp-button">
+                    <button> 
+                        <a href="https://wa.me/7354927108?text=Namaste!%20I%27m%20interested%20in%20exploring%20astrology%20and%20would%20love%20to%20connect%20with%20you%20for%20guidance.">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </button>
+                </div>
+            </ul>
+        </nav>
+
+        <!--heroo-->
+    <div class="hero-section" style="display: flex; margin: 0 auto; padding: 50px; justify-content: space-between; align-items: center;background: #020024;
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, rgba(4, 4, 71, 1) 81%, rgba(2, 0, 36, 1) 100%);">
+      <div class="hero-text" style="max-width: 600px; ">
+        <h2 style="font-weight: 600; color:wheat">Trust our experience</h2>
+        <h1 class="hero-h1">I have the answer to all your questions, ask me questions</h1>
+        <p style="color: whitesmoke;">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The</p>
+        <p class="tagline" style="color: whitesmoke;">Explore the Universe of Astrology and Horoscopes</p>
+        <button type="button" class="btn btn-outline-info" style="background-color: black; color:white; "><a style="text-decoration: none; color:white;" href="https://wa.me/7354927108?text=Namaste!%20I%27m%20interested%20in%20exploring%20astrology%20and%20would%20love%20to%20connect%20with%20you%20for%20guidance.">Contact Me</a></button>
+      </div>
+      <div class="hero-image-container"> 
+        <div class="about-wheel-container">
+            <img src="img/astrologywheel2-1024x1024.png" alt="Astrology Wheel" class="about-wheel">
+          </div>
+        <div class="hero-image-glow"></div>
+      </div>
+    </div>
+
+
+    <!--extra -->
+
+    
+    <div class="extra-bg-img">
+  <div class="extra-text">
+    <h1 >Know the secrets of your life without date of birth and get solution to your problems.</h1>
+  </div>
+
+  <img src="img/farzad-mohsenvand-TbuescuqMjA-unsplash.jpg" style="box-shadow: #e6edb4;" alt="Astrology Background Image" class="extra-bg-image">
+</div>
+    
+
+<!-- About Us -->
+
+      <div style="margin-top: 40px;" >
+        <div class="about-text" >
+          <h1 style="font-size: 3rem;">About Us</h1>
+          
+          <p> Astro Dr. Kanhaiya, a seasoned astrologer with 5+ years of experience</p>
+        </div>
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; max-width: 1200px; margin: 0 auto; ">
+          <div class="about-img">
+            <img src="img/210101020235643738.png" alt="Astrologer Image" class="about-image">
+          </div>
+          <div class="about-description">
+            <h1>Who I Am ?</h1>
+            <p> Astro Dr. Kanhaiya is a distinguished Vedic astrologer specializing in Prashna Kundali, a precise and insightful method that provides accurate 
+              guidance—even for those without birth details. With over 5 years of experience in astrology and more than a decade as a college professor,
+               he merges academic wisdom with astrological depth to help individuals navigate life’s challenges.</p>
+               <div style="display: flex; ">
+                <div><i class="fa-solid fa-7 " style="color: #0a0a09; font-size:50px;padding: 10px;"></i></div>
+                <div>
+                <span>years of <br> experience  </span>
+               </div>
+               </div>
+              
+          </div>
+        </div>
+      </div>
+  
+         <!-- why we choice-->
+         <section class="why-choose-us">
+  <div class="container">
+    <h2>Why Choose Us</h2>
+    <p class="subtitle">
+      It is a long established fact that a reader will be distracted by the readable content of a page <br />
+      when looking at its layout. The point of using Lorem Ipsum.
+    </p>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="icon">100+</div>
+        <p>Trusted by Thousand Clients</p>
+      </div>
+      <div class="stat-item">
+        <div class="icon">30+</div>
+        <p>Years of Experience</p>
+      </div>
+      <div class="stat-item">
+        <div class="icon">55+</div>
+        <p>Types of Horoscopes</p>
+      </div>
+      <div class="stat-item">
+        <div class="icon">90+</div>
+        <p>Qualified Astrologers</p>
+      </div>
+      <div class="stat-item">
+        <div class="icon">99+</div>
+        <p>Success Horoscope</p>
+      </div>
+    </div>
+  </div>
+</section>  
+
+       <!--offer-->
+       <div >
+        <div class="offer-head-text" style="text-align: center; padding: 20px;margin-top: 30px;">
+          <h1>Astrological Proficiencies</h1>
+          <p>Skilled in delivering personalized guidance through proven astrological methods like Prashna Kundli and Vastu.</p>
+        </div>
+
+    <div style=" display: flex; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; gap: 60px;">
+  
+  <!-- Left Side: Image -->
+  <div class="offer-img" style="border-radius: 50%; width: 400px; height: 400px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
+    <img src="img/astrology-wheel-.webp" alt="" style="width: 100%; height: auto; border-radius: 50%;">
+  </div>
+  
+  <!-- Right Side: Cards -->
+  <div class="offer-card" style="flex: 1; display: flex; flex-direction: row; gap: 20px;">
+    
+    <div class="kundli" style="background-color: #e6edb4; padding: 25px; border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-left: 40%;">
+      <img src="img/image.png" alt="">
+      <h1 style="margin: 0 0 10px;">Prashna-Kundali</h1>
+      <p style="margin: 0;">Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+    </div>
+
+    <!-- <div class="vastu" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+      <img src="" alt="">
+      <h1 style="margin: 0 0 10px;">Finance Consultant</h1>
+      <p style="margin: 0;">Finance Consultant — offering tailored astrological insights to help navigate financial decisions, investments, and prosperity planning.</p>
+    </div> -->
+    
+  </div>
+</div>
+       </div>
+
+      <!-- Service-->
+
+    <section class="service"  style="background-color: rgb(220, 250, 240);" >
+       <div >
+            <div class="service-text" style="text-align: center; padding: 10px;margin-top: 30px; margin-bottom:30px;">
+                <h1>Services</h1>
+                
+                <p>We offer a wide range of astrological services to help you navigate life's challenges and make informed decisions.</p>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; justify-content: center;  gap: 60px; ">
+                <div class="service-divv">
+                <div class="service-icon">
+                    <img src="icon/care.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+                
+                <div class="service-divv">
+                <div class="service-icon">
+                    <img src="icon/graduate.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+
+                <div class="service-divv">
+                <div class="service-icon">
+                    <img src="icon/home-care.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center;  gap: 60px; ">
+                <div class="service-divv" style="margin-top: 80px;">
+                <div class="service-icon">
+                    <img src="icon/marriage.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+
+                <div class="service-divv" style="margin-top: 80px;">
+                <div class="service-icon">
+                    <img src="icon/graduate (1).gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+
+                <div class="service-divv" style="margin-top: 80px;">
+                <div class="service-icon">
+                    <img src="icon/dollar.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
+                </div>
+                <div class="service-text" >
+                    <h1>Prashna-Kundali</h1>
+                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+                </div></div>
+
+            </div>
+        </div>
+    </section>
+
+        
+        
+       
+    <main>
+       
+
+        <section id="forecast" style="background-color: #1c0241;">
+            <h1>Horoscope Forecasts</h1>
+            <p class="forecast-intro">Read free daily, weekly and monthly horoscopes which are always available through the website. You will find a compilation of all current astrological forecasts.</p>
+            
+            <div class="zodiac-grid">
+                <div class="zodiac-item">
+                    <div class="zodiac-icon aries">
+                        <img src="img/aries.png"/>
+                    </div>
+                    <h3>Aries</h3>
+                    <p>MAR 21-APR 19</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon taurus">
+                       <img src="img/taurus (1).png" alt="" srcset="">
+                    </div>
+                    <h3>Taurus</h3>
+                    <p>APR 20-MAY 20</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon gemini">
+                        <img src="img/gemini (1).png" alt="" srcset="">
+                    </div>
+                    <h3>Gemini</h3>
+                    <p>MAY 21-JUNE 20</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon cancer">
+                        <img src="img/cancer.png" alt="">
+                    </div>
+                    <h3>Cancer</h3>
+                    <p>JUNE 21-JULY 22</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon leo">
+                        <img src="img/leo.png" alt="">
+                    </div>
+                    <h3>Leo</h3>
+                    <p>JULY 23-AUG 22</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon virgo">
+                        <img src="img/virgo.png" alt="">
+                    </div>
+                    <h3>Virgo</h3>
+                    <p>AUG 23-SEP 22</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon libra">
+                        <img src="img/libra.png" alt="">
+                    </div>
+                    <h3>Libra</h3>
+                    <p>SEP 23-OCT 22</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon scorpio">
+                        <img src="img/scorpio.png" alt="">
+                    </div>
+                    <h3>Scorpio</h3>
+                    <p>OCT 23-NOV 21</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon sagittarius">
+                        <img src="img/sagittarius.png" alt="">
+                    </div>
+                    <h3>Sagittarius</h3>
+                    <p>NOV 22-DEC 21</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon capricorn">
+                        <img src="img/capricorn.png" alt="">
+                    </div>
+                    <h3>Capricorn</h3>
+                    <p>DEC 22-JAN 19</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon aquarius">
+                       <img src="img/aquarius.png" alt="">
+                    </div>
+                    <h3>Aquarius</h3>
+                    <p>JAN 20-FEB 18</p>
+                </div>
+                <div class="zodiac-item">
+                    <div class="zodiac-icon pisces">
+                        <img src="img/pisces.png" alt="">
+                    </div>
+                    <h3>Pisces</h3>
+                    <p>FEB 19-MAR 20</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- <section id="statistics">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <div class="stat-number">7+</div>
+                    <div class="stat-label">Year of<br>Business</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <div class="stat-number">24+</div>
+                    <div class="stat-label">Successful<br>Sessions</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-number">64+</div>
+                    <div class="stat-label">Happy<br>Clients</div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-coffee"></i>
+                    <div class="stat-number">18+</div>
+                    <div class="stat-label">Cup Of<br>Coffee</div>
+                </div>
+            </div>
+        </section> -->
+
+
+        <!-- testimonal-->
+
+
+        <section style="background-color: #1c0241;">
+            <div class="testimonial-container">
+                <div class="testimonial-slider" style="display: flex; gap: 30px; overflow-x: auto; padding: 20px; scrollbar-width: none;">
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="/frontend/img/aquarius.png" alt="User 1">
+                        <h3>John Doe</h3>
+                        <p>"This is an amazing product! I highly recommend it."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 2">
+                        <h3>Jane Smith</h3>
+                        <p>"I've seen a significant improvement since using this service."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 3">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 4">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 5">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 6">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 7">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 8">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 9">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 10">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 11">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 12">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                        <img src="https://via.placeholder.com/100" alt="User 13">
+                        <h3>Peter Jones</h3>
+                        <p>"Great customer support and fast delivery."</p>
+                    </div>
+                </div>
+                
+                <!-- <div class="controls">
+                    <button id="prevBtn">&lt;</button>
+                    <button id="nextBtn">&gt;</button>
+                </div> -->
+            </div>
+        </section>
+    <!-- Appointment Booking Section -->
+    <section id="appointment" style="padding: 80px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="appointment-card" style="background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 50px; margin-top: -30px; position: relative; z-index: 3; color: #2c3e50;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-weight: bold; margin-bottom: 15px; color: #2c3e50;">Book Your Astrology Session</h2>
+                    <p style="color: #6c757d; margin: 0;">Fill out the form below and our expert astrologers will get back to you</p>
+                </div>
+                
+                <form id="appointmentForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="fullName" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Full Name *</label>
+                        <input type="text" id="fullName" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="email" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Email Address *</label>
+                        <input type="email" id="email" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="phone" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Phone Number *</label>
+                        <input type="tel" id="phone" pattern="[0-9]{10}" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="sessionType" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Session Type *</label>
+                        <select id="sessionType" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease; background: white;">
+                            <option value="">Select Session Type</option>
+                            <option value="call">Phone Call Session</option>
+                            <option value="chat">Chat Session</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="preferredDate" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Preferred Date *</label>
+                        <input type="date" id="preferredDate" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="preferredTime" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Preferred Time *</label>
+                        <input type="time" id="preferredTime" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label for="message" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Message (Optional)</label>
+                        <textarea id="message" rows="4" placeholder="Tell us about your concerns or questions..." style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease; resize: vertical;"></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
+                        <button type="submit" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; padding: 15px 40px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                            <span class="spinner-border spinner-border-sm" style="display: none; margin-right: 10px;" role="status"></span>
+                            <i class="fas fa-calendar-check" style="margin-right: 10px;"></i>
+                            Book Appointment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+       
+    <!-- Footer Section -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-col about-col">
+                    <h3>Astro Dr. Kanhaiya</h3>
+                    <p>Expert in Vedic astrology with over 5 years of experience, providing personalized guidance through proven astrological methods like Prashna Kundli and Vastu.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#service">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="login-working.html">Login</a></li>
+                        <li><a href="register-working .html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">Prashna Kundali</a></li>
+                        <li><a href="#">Marriage Consultant</a></li>
+                        <li><a href="#">Career Consultant</a></li>
+                        <li><a href="#">Finance Consultant</a></li>
+                        <li><a href="#">Business Consultant</a></li>
+                        <li><a href="#">Health Consultant</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-col">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +91 7354927108</li>
+                        <li><i class="fas fa-envelope"></i> info@astrodrkanhaiya.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Lucknow, Uttar Pradesh, India</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">
+                <p>&copy; 2023 Astro Dr. Kanhaiya. All Rights Reserved.</p>
+            </div>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    <!-- Floating Call button -->
+    <button id="callNowFab" aria-label="Start Call" title="Start Call"
+            onclick="callInterface.showCallInterface()"
+            style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; border: none; border-radius: 50px; padding: 12px 16px; background: #dc3545; color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.25); display: flex; align-items: center; gap: 8px;">
+        <i class="fas fa-phone"></i>
+        Call Now
+    </button>
+    
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navbar-utils.js"></script>
+    <script src="js/script.js"></script>
+    <!-- Call interface logic -->
+    <script src="js/call-interface.js?v=20250827-2319"></script>
+<script>
+    // Counter animation function
+    function animateCounter(element, target) {
+        let current = 0;
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16); // Update every 16ms (60fps)
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current) + '+';
+        }, 16);
+    }
+
+    // Intersection Observer for statistics
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumbers = entry.target.querySelectorAll('.stat-number');
+                statNumbers.forEach(number => {
+                    const target = parseInt(number.textContent);
+                    animateCounter(number, target);
+                });
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // Intersection Observer for timeline items
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                timelineObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    // Observe the statistics section
+    const statsSection = document.querySelector('#statistics');
+    statsObserver.observe(statsSection);
+
+    // Observe timeline items
+    document.querySelectorAll('.timeline-item').forEach(item => {
+        timelineObserver.observe(item);
+    });
+
+    // Appointment form handling
+    document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const spinner = submitBtn.querySelector('.spinner-border');
+        const btnText = submitBtn.querySelector('i');
+        
+        // Get form data
+        const formData = {
+            name: document.getElementById('fullName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            sessionType: document.getElementById('sessionType').value,
+            preferredDate: new Date(document.getElementById('preferredDate').value).toISOString(),
+            preferredTime: document.getElementById('preferredTime').value,
+            message: document.getElementById('message').value.trim()
+        };
+        
+        // Validate required fields
+        if (!formData.name || !formData.email || !formData.phone || !formData.sessionType || !formData.preferredDate || !formData.preferredTime) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            showToast('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        // Validate phone format (10 digits)
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(formData.phone)) {
+            showToast('Please enter a valid 10-digit phone number', 'error');
+            return;
+        }
+        
+        // Validate date (not in the past)
+        const selectedDate = new Date(formData.preferredDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+            showToast('Please select a future date', 'error');
+            return;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        spinner.style.display = 'inline-block';
+        btnText.style.display = 'none';
+        
+        try {
+            const response = await fetch('http://localhost:9000/api/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                showToast('Appointment booked successfully! We will contact you soon.', 'success');
+                this.reset(); // Clear the form
+            } else {
+                showToast(data.message || 'Failed to book appointment. Please try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Appointment booking error:', error);
+            showToast('Network error. Please check your connection and try again.', 'error');
+        } finally {
+            // Hide loading state
+            submitBtn.disabled = false;
+            spinner.style.display = 'none';
+            btnText.style.display = 'inline';
+        }
+    });
+    
+    // Toast notification function
+    function showToast(message, type = 'info') {
+        // Create toast container if it doesn't exist
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                max-width: 350px;
+            `;
+            document.body.appendChild(toastContainer);
+        }
+        
+        // Create toast element
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8';
+        toast.style.cssText = `
+            background: ${bgColor};
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            font-weight: 500;
+        `;
+        toast.textContent = message;
+        
+        // Add to container
+        toastContainer.appendChild(toast);
+        
+        // Animate in
+        setTimeout(() => {
+            toast.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 5000);
+    }
+    
+    // Set minimum date to today
+    document.getElementById('preferredDate').min = new Date().toISOString().split('T')[0];
+    
+    // Authentication state management for navbar
+    function updateNavbar() {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const userMenu = document.getElementById('userMenu');
+        const adminBtn = document.getElementById('adminBtn');
+        const userNameSpan = document.getElementById('userName');
+        
+        if (token && user.id) {
+            // User is logged in - hide login/register buttons and show user menu
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (registerBtn) registerBtn.style.display = 'none';
+            if (userMenu) {
+                userMenu.style.display = 'block';
+                if (userNameSpan) userNameSpan.textContent = user.name || 'User';
+            }
+            
+            // Show admin button if user is admin
+            if (adminBtn && user.isAdmin) {
+                adminBtn.style.display = 'inline-block';
+            }
+        } else {
+            // User not logged in - show login/register buttons and hide user menu
+            if (loginBtn) loginBtn.style.display = 'inline-block';
+            if (registerBtn) registerBtn.style.display = 'inline-block';
+            if (userMenu) userMenu.style.display = 'none';
+            if (adminBtn) adminBtn.style.display = 'none';
+        }
+    }
+    
+    // Profile function
+    function viewProfile() {
+        // Redirect to user profile page
+        window.location.href = 'user-profile.html';
+    }
+    
+    // Logout function
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        showToast('Logged out successfully', 'info');
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+    
+    // Update navbar on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateNavbar();
+    });
+</script>
+</body>
+</html>

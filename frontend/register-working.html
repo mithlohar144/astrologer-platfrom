@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Astrology Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .input-group-text {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-right: none;
+            border-radius: 10px 0 0 10px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast {
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast.error {
+            background: #dc3545;
+        }
+        .toast.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Icon -->
+    <div class="position-fixed top-0 start-0 p-3">
+        <a href="index.html" class="btn btn-light rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" title="Go to Home">
+            <i class="fas fa-home text-primary" style="font-size: 1.2rem;"></i>
+        </a>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-5">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-star-and-crescent fa-3x text-primary mb-3"></i>
+                            <h2 class="fw-bold">Create Account</h2>
+                            <p class="text-muted">Join our astrology community</p>
+                        </div>
+                        
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="name" required minlength="2">
+                                </div>
+                                <div class="invalid-feedback">Please enter your full name (at least 2 characters).</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">Contact Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" id="contact" pattern="[0-9]{10}" required>
+                                </div>
+                                <div class="invalid-feedback">Please enter a valid 10-digit contact number.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" required minlength="6">
+                                </div>
+                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                                <div class="invalid-feedback">Passwords do not match.</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="text-primary">Terms & Conditions</a>
+                                    </label>
+                                    <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                                <span class="spinner-border spinner-border-sm d-none me-2" role="status"></span>
+                                Create Account
+                            </button>
+                        </form>
+
+                        <div class="text-center">
+                            <p class="mb-0">Already have an account? <a href="login-working.html" class="text-primary fw-bold">Sign In</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <script>
+        const API_URL = 'http://localhost:9000/api';
+
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'} me-2"></i>
+                ${message}
+            `;
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Validate password match
+        function validatePasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                confirmPasswordField.setCustomValidity('Passwords do not match');
+                return false;
+            } else {
+                confirmPasswordField.setCustomValidity('');
+                return true;
+            }
+        }
+
+        // Add real-time password validation
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
+        document.getElementById('password').addEventListener('input', validatePasswordMatch);
+
+        // Handle registration form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            console.log('🚀 Registration form submitted');
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const spinner = submitBtn.querySelector('.spinner-border');
+            
+            // Validate form
+            if (!form.checkValidity() || !validatePasswordMatch()) {
+                form.classList.add('was-validated');
+                showToast('Please fill in all fields correctly', 'error');
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                contact: document.getElementById('contact').value.trim(),
+                password: document.getElementById('password').value
+            };
+
+            console.log('📝 Form data:', {
+                name: formData.name,
+                email: formData.email,
+                contact: formData.contact,
+                passwordLength: formData.password.length
+            });
+
+            // Show loading state
+            submitBtn.disabled = true;
+            spinner.classList.remove('d-none');
+            form.classList.add('loading');
+
+            try {
+                console.log('🌐 Sending request to:', `${API_URL}/auth/register`);
+                
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('📡 Response status:', response.status);
+                console.log('📡 Response headers:', [...response.headers.entries()]);
+
+                const data = await response.json();
+                console.log('📦 Response data:', data);
+
+                if (response.ok && data.success) {
+                    showToast('Registration successful! Welcome to our platform!', 'success');
+                    
+                    // Store user data if provided
+                    if (data.data && data.data.token) {
+                        localStorage.setItem('token', data.data.token);
+                        localStorage.setItem('user', JSON.stringify(data.data.user));
+                    }
+                    
+                    // Redirect to index.html after successful registration
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    // Handle specific error cases
+                    let errorMessage = data.message || 'Registration failed';
+                    
+                    if (response.status === 409) {
+                        errorMessage = 'Email already registered. Please use a different email or login instead.';
+                    } else if (response.status === 400) {
+                        if (data.errors && Array.isArray(data.errors)) {
+                            errorMessage = data.errors.join(', ');
+                        } else if (data.missingFields) {
+                            errorMessage = `Missing required fields: ${data.missingFields.join(', ')}`;
+                        }
+                    }
+                    
+                    console.error('❌ Registration error:', errorMessage);
+                    showToast(errorMessage, 'error');
+                }
+            } catch (error) {
+                console.error('💥 Network error:', error);
+                showToast('Network error. Please check if the server is running and try again.', 'error');
+            } finally {
+                // Reset loading state
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                form.classList.remove('loading');
+            }
+        });
+
+        // Test backend connection on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('🔍 Testing backend connection...');
+                const response = await fetch(`${API_URL}/health`);
+                if (response.ok) {
+                    console.log('✅ Backend connection successful');
+                    showToast('Connected to server successfully', 'success');
+                } else {
+                    throw new Error('Health check failed');
+                }
+            } catch (error) {
+                console.error('❌ Backend connection failed:', error);
+                showToast('Warning: Cannot connect to server. Please ensure backend is running on port 9000.', 'warning');
+            }
+        });
+    </script>
+</body>
+</html>
