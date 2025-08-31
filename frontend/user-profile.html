@@ -273,7 +273,7 @@
 
     <script src="js/config.js"></script>
     <script>
-        const API_URL = 'https://astrologer-platfrom.onrender.com';
+        const API_URL = 'https://astrologer-platfrom.onrender.com/api';
 
         // Currency: INR formatting helper (top-level)
         function formatINR(value) {
@@ -354,7 +354,7 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 4000);
             try {
-                const res = await fetch(`${API_URL}/api/health`, { signal: controller.signal });
+                const res = await fetch(`${API_URL}/health`, { signal: controller.signal });
                 clearTimeout(timeoutId);
                 return res.ok;
             } catch (e) {
