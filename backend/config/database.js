@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || "mongodb+srv://test_astro:Mith@2006@cluster0.ntxwrkn.mongodb.net/astrologer-platform?retryWrites=true&w=majority&appName=Cluster0";
+    const mongoURI = process.env.MONGODB_URI || "mongodb+srv://sumitlohar7415_db_user:Mith@1234@astro.yhmo5el.mongodb.net/?retryWrites=true&w=majority&appName=astro";
     
     const conn = await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
