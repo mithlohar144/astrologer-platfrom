@@ -1,8 +1,6 @@
 // Configuration for different environments
 const CONFIG = {
-  API_URL: window.location.hostname === 'localhost' 
-    ? 'http://localhost:9000/api'
-    : 'https://astro-back-xztt.onrender.com/api',
+  API_URL:'https://astrologer-platfrom.onrender.com',
 
   // Session timeout in minutes
   SESSION_TIMEOUT: 30,
