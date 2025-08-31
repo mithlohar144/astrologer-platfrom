@@ -265,7 +265,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 console.log('🔍 Testing backend connection...');
-                const response = await fetch(`${API_URL}/health`);
+                const response = await fetch(`${API_URL}/api/health`);
                 if (response.ok) {
                     console.log('✅ Backend connection successful');
                 } else {
