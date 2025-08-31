@@ -1,5 +1,5 @@
 // API_URL will be set by config.js
-let API_URL = (window.API_CONFIG && window.API_CONFIG.API_URL) ? window.API_CONFIG.API_URL : 'http://localhost:9002/api';
+let API_URL = 'https://astrologer-platfrom.onrender.com';
 
 // Handle preloader
 document.addEventListener('DOMContentLoaded', function() {
