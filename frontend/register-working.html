@@ -311,7 +311,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 console.log('🔍 Testing backend connection...');
-                const response = await fetch(`https://astrologer-platfrom.onrender.com/api/health`);
+                const response = await fetch('https://astrologer-platfrom.onrender.com/api/health');
                 if (response.ok) {
                     console.log('✅ Backend connection successful');
                     showToast('Connected to server successfully', 'success');
