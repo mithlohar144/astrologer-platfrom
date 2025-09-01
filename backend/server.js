@@ -27,7 +27,15 @@ app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = [
- 'https://astrologer-platfrom-1.onrender.com'
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:8000',
+  'http://127.0.0.1:8080',
+  'http://localhost:3005',
+  'http://127.0.0.1:5500',
+  process.env.FRONTEND_URL,
+  // Add your Vercel domain here when deployed
+  'https://your-app-name.vercel.app'
 ].filter(Boolean);
 
 app.use(cors({
@@ -155,18 +163,18 @@ app.use((error, req, res, next) => {
   res.status(error.status || 500).json({
     success: false,
     message: error.message || 'Internal Server Error',
-    ...(process.env.NODE_ENV === 'producation' && { stack: error.stack })
+    ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
   });
 });
 
 // Start server
-const PORT = process.env.BACKEND_URL;
+const PORT = process.env.PORT || 9000;
 const server = app.listen(PORT, () => {
   console.log(`
 🚀 Server running on port ${PORT}
-🌍 Environment: ${process.env.NODE_ENV || 'producation'}
-📡 API Base URL: ${PORT}/api
-🏥 Health Check: ${PORT}/api/health
+🌍 Environment: ${process.env.NODE_ENV || 'development'}
+📡 API Base URL: http://localhost:${PORT}/api
+🏥 Health Check: http://localhost:${PORT}/api/health
   `);
 });
 
