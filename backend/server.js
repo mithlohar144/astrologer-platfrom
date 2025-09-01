@@ -155,18 +155,18 @@ app.use((error, req, res, next) => {
   res.status(error.status || 500).json({
     success: false,
     message: error.message || 'Internal Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+    ...(process.env.NODE_ENV === 'producation' && { stack: error.stack })
   });
 });
 
 // Start server
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.BACKEND_URL;
 const server = app.listen(PORT, () => {
   console.log(`
 🚀 Server running on port ${PORT}
-🌍 Environment: ${process.env.NODE_ENV || 'development'}
-📡 API Base URL: http://localhost:${PORT}/api
-🏥 Health Check: http://localhost:${PORT}/api/health
+🌍 Environment: ${process.env.NODE_ENV || 'producation'}
+📡 API Base URL: ${PORT}/api
+🏥 Health Check: ${PORT}/api/health
   `);
 });
 
