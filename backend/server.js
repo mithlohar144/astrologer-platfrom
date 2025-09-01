@@ -35,7 +35,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5500',
   process.env.FRONTEND_URL,
   // Add your Vercel domain here when deployed
-  'https://your-app-name.vercel.app'
+  'https://astrologer-platfrom-1.onrender.com'
 ].filter(Boolean);
 
 app.use(cors({
