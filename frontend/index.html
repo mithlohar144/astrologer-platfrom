@@ -11,6 +11,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap" rel="stylesheet">
+    <!-- Calendly link widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <!-- Calendly link widget end -->
     <!-- Styles -->
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -50,8 +54,8 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="user-profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
                             <li><a class="dropdown-item" href="wallet-recharge.html"><i class="fas fa-wallet me-2"></i>My Wallet</a></li>
-                            <li><a class="dropdown-item" href="session.html"><i class="fas fa-video me-2"></i>Start Session</a></li>
-                            <li><a class="dropdown-item" href="call-history.html"><i class="fas fa-history me-2"></i>Call History</a></li>
+                            <li><a class="dropdown-item" onclick="openCalendly()"><i class="fas fa-video me-2"></i>Request for Callback</a></li>
+                            
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
@@ -80,7 +84,7 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         <h1 class="hero-h1">I have the answer to all your questions, ask me questions</h1>
         <p style="color: whitesmoke;">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The</p>
         <p class="tagline" style="color: whitesmoke;">Explore the Universe of Astrology and Horoscopes</p>
-        <button type="button" class="btn btn-outline-info" style="background-color: black; color:white; "><a style="text-decoration: none; color:white;" href="https://wa.me/7354927108?text=Namaste!%20I%27m%20interested%20in%20exploring%20astrology%20and%20would%20love%20to%20connect%20with%20you%20for%20guidance.">Contact Me</a></button>
+        <button type="button" class="btn btn-outline-info" style="background-color: black; color:white; "><a style="text-decoration: none; color:white;" href="#" onclick="openCalendly()">Book a Call</a></button>
       </div>
       <div class="hero-image-container"> 
         <div class="about-wheel-container">
@@ -589,11 +593,11 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         <i class="fas fa-arrow-up"></i>
     </div>
     <!-- Floating Call button -->
-    <button id="callNowFab" aria-label="Start Call" title="Start Call"
-            onclick="callInterface.showCallInterface()"
+    <button  href="#x" onclick="openCalendly()"
+            
             style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; border: none; border-radius: 50px; padding: 12px 16px; background: #dc3545; color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.25); display: flex; align-items: center; gap: 8px;">
         <i class="fas fa-phone"></i>
-        Call Now
+        Book a Call
     </button>
     
     <script src="js/config.js"></script>
@@ -841,6 +845,17 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
     document.addEventListener('DOMContentLoaded', () => {
         updateNavbar();
     });
+    function openCalendly() {
+            if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+                Calendly.initPopupWidget({
+                    url: 'https://calendly.com/bitvallysoftwere/new-meeting?background_color=f0efef'
+                });
+                return false;
+            }
+            // Fallback: open in new tab if widget not loaded yet
+            window.open('https://calendly.com/bitvallysoftwere/new-meeting?background_color=f0efef', '_blank', 'noopener');
+            return false;
+        }
 </script>
 </body>
 </html>
