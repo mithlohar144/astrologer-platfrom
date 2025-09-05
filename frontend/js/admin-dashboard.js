@@ -1,9 +1,69 @@
 // API_URL will be set by config.js
-let API_URL = 'https://astrologer-platfrom.onrender.com';
+let API_URL = 'https://astrologer-platfrom.onrender.com/api';
 let currentUser = null;
 let earningsChart = null;
 let serviceChart = null;
 let yearlyEarningsChart = null;
+
+// =========================
+// Realtime updates handling
+// =========================
+let realtimeIntervals = { stats: null, users: null, appts: null, earnings: null };
+let inflight = { stats: false, users: false, appts: false, earnings: false };
+
+function startRealtimeUpdates() {
+    // Clear any existing intervals first
+    stopRealtimeUpdates();
+
+    // Poll frequencies (in ms)
+    const STATS_EVERY = 15000;      // 15s
+    const USERS_EVERY = 60000;      // 60s
+    const APPTS_EVERY = 10000;      // 10s
+    const EARNINGS_EVERY = 60000;   // 60s
+
+    // Kick off initial refreshes safely
+    safeRefresh('stats', loadDashboardStats);
+    safeRefresh('users', loadUsers);
+    safeRefresh('appts', loadAppointments);
+    safeRefresh('earnings', loadEarningsData);
+
+    // Set intervals
+    realtimeIntervals.stats = setInterval(() => safeRefresh('stats', loadDashboardStats), STATS_EVERY);
+    realtimeIntervals.users = setInterval(() => safeRefresh('users', loadUsers), USERS_EVERY);
+    realtimeIntervals.appts = setInterval(() => safeRefresh('appts', loadAppointments), APPTS_EVERY);
+    realtimeIntervals.earnings = setInterval(() => safeRefresh('earnings', loadEarningsData), EARNINGS_EVERY);
+
+    // Pause/resume when tab visibility changes to save resources
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+}
+
+function stopRealtimeUpdates() {
+    Object.values(realtimeIntervals).forEach(id => id && clearInterval(id));
+    realtimeIntervals = { stats: null, users: null, appts: null, earnings: null };
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+}
+
+function handleVisibilityChange() {
+    if (document.hidden) {
+        // Pause intervals
+        Object.values(realtimeIntervals).forEach(id => id && clearInterval(id));
+    } else {
+        // Resume fresh intervals
+        startRealtimeUpdates();
+    }
+}
+
+async function safeRefresh(key, fn) {
+    if (inflight[key]) return; // Prevent overlapping fetches
+    inflight[key] = true;
+    try {
+        await fn();
+    } catch (e) {
+        // Errors are handled inside each loader via showToast
+    } finally {
+        inflight[key] = false;
+    }
+}
 
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', async () => {
@@ -35,6 +95,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize filters
     initializeFilters();
+
+    // Start realtime updates
+    startRealtimeUpdates();
 });
 
 // Sidebar navigation
