@@ -1,6 +1,9 @@
 // Configuration for different environments
+const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const CONFIG = {
-  API_URL:'https://astrologer-platfrom.onrender.com',
+  API_URL: isLocalHost
+    ? 'http://localhost:9000/api'
+    : 'https://astrologer-platfrom.onrender.com/api',
 
   // Session timeout in minutes
   SESSION_TIMEOUT: 30,
@@ -28,9 +31,7 @@ window.API_CONFIG = {
     API_URL: CONFIG.API_URL,
     // Do not expose payment keys here. For Razorpay, obtain the key from
     // your backend's create-order response. See wallet-recharge.html usage.
-    isDevelopment: window.location.hostname === 'localhost' || 
-                   window.location.hostname === '127.0.0.1' || 
-                   window.location.hostname.includes('localhost')
+    isDevelopment: isLocalHost
 };
 
 console.log('Environment:', window.API_CONFIG.isDevelopment ? 'Development' : 'Production');
