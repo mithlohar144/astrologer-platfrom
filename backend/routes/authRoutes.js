@@ -4,7 +4,8 @@ const {
   register,
   login,
   getMe,
-  updateProfile
+  updateProfile,
+  adminLogin
 } = require('../controllers/authController');
 const {
   requestPasswordReset,
@@ -75,6 +76,7 @@ const resetPasswordValidation = [
 // Routes
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
+router.post('/admin/login', loginValidation, adminLogin);
 router.get('/me', authMiddleware, getMe);
 router.put('/profile', authMiddleware, profileUpdateValidation, updateProfile);
 
