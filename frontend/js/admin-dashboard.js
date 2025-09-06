@@ -15,11 +15,11 @@ function startRealtimeUpdates() {
     // Clear any existing intervals first
     stopRealtimeUpdates();
 
-    // Poll frequencies (in ms)
-    const STATS_EVERY = 15000;      // 15s
-    const USERS_EVERY = 60000;      // 60s
-    const APPTS_EVERY = 10000;      // 10s
-    const EARNINGS_EVERY = 60000;   // 60s
+    // Poll frequencies (in ms) - Optimized for production
+    const STATS_EVERY = 5000;       // 5s - Critical metrics
+    const USERS_EVERY = 30000;      // 30s - User activity
+    const APPTS_EVERY = 3000;       // 3s - Real-time appointments
+    const EARNINGS_EVERY = 10000;   // 10s - Financial data
 
     // Kick off initial refreshes safely
     safeRefresh('stats', loadDashboardStats);
@@ -59,7 +59,11 @@ async function safeRefresh(key, fn) {
     try {
         await fn();
     } catch (e) {
-        // Errors are handled inside each loader via showToast
+        console.error(`Real-time update failed for ${key}:`, e);
+        // Retry mechanism for critical data
+        if (['stats', 'appts'].includes(key)) {
+            setTimeout(() => safeRefresh(key, fn), 2000); // Retry after 2s
+        }
     } finally {
         inflight[key] = false;
     }
@@ -96,9 +100,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize filters
     initializeFilters();
 
-    // Start realtime updates
+    // Start real-time updates with production optimizations
     startRealtimeUpdates();
+    
+    // Add connection status indicator
+    addConnectionStatusIndicator();
 });
+
+// Connection status indicator for production monitoring
+function addConnectionStatusIndicator() {
+    const indicator = document.createElement('div');
+    indicator.id = 'connection-status';
+    indicator.style.cssText = `
+        position: fixed; top: 10px; right: 10px; z-index: 9999;
+        padding: 8px 12px; border-radius: 20px; font-size: 12px;
+        background: #28a745; color: white; font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    `;
+    indicator.textContent = '🟢 Connected';
+    document.body.appendChild(indicator);
+    
+    // Monitor connection status
+    let lastSuccessTime = Date.now();
+    const checkConnection = async () => {
+        try {
+            const response = await fetch(`${API_URL}/health`, { 
+                method: 'GET',
+                timeout: 5000 
+            });
+            if (response.ok) {
+                lastSuccessTime = Date.now();
+                indicator.style.background = '#28a745';
+                indicator.textContent = '🟢 Connected';
+            } else {
+                throw new Error('Health check failed');
+            }
+        } catch (e) {
+            const timeSinceSuccess = Date.now() - lastSuccessTime;
+            if (timeSinceSuccess > 30000) { // 30s without success
+                indicator.style.background = '#dc3545';
+                indicator.textContent = '🔴 Disconnected';
+            } else {
+                indicator.style.background = '#ffc107';
+                indicator.textContent = '🟡 Reconnecting...';
+            }
+        }
+    };
+    
+    // Check connection every 10 seconds
+    setInterval(checkConnection, 10000);
+    checkConnection(); // Initial check
+}
 
 // Sidebar navigation
 function initializeSidebar() {
