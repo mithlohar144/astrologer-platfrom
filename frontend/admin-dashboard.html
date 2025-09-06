@@ -347,17 +347,19 @@
             }
 
             /* New modern admin layout (sidebar + topbar) */
-            .admin-shell { background:#f5f7fb; min-height:100vh; padding:16px; }
-            .admin-layout { display:flex; gap:16px; max-width:1280px; margin:0 auto; }
-            .admin-sidebar { width:260px; background:#fff; border:1px solid #eef1f7; border-radius:14px; box-shadow:0 10px 24px rgba(31,45,61,0.06); padding:14px; }
-            .admin-brand { padding:8px 10px 14px; border-bottom:1px solid #eef1f7; }
-            .admin-brand .title { font-weight:800; color:#22314a; }
-            .admin-brand .sub { font-size:12px; color:#7a8aa0; margin-top:2px; }
-            .admin-menu { list-style:none; padding:8px 6px 6px; margin:0; display:flex; flex-direction:column; gap:6px; }
-            .admin-menu a { display:flex; align-items:center; gap:10px; color:#22314a; text-decoration:none; padding:10px 10px; border-radius:10px; }
-            .admin-menu a:hover, .admin-menu a.active { background:#eef3f9; }
-            .admin-menu i { width:18px; text-align:center; color:#3a6edb; }
-            .admin-content { flex:1; background:#fff; border:1px solid #eef1f7; border-radius:14px; box-shadow:0 10px 24px rgba(31,45,61,0.06); }
+            .admin-shell { background:#f5f7fa; min-height:100vh; padding:0; display:flex; }
+            .admin-layout { display:flex; gap:0; max-width:none; margin:0; }
+            .admin-sidebar { width:280px; background:#ffffff; border:none; border-radius:0; box-shadow:2px 0 10px rgba(0,0,0,0.05); padding:0; position:fixed; top:0; left:0; height:100vh; overflow-y:auto; z-index:1000; transition:all 0.3s ease; border-right:1px solid #e5e7eb; }
+            .admin-brand { padding:2rem 1.5rem; border-bottom:1px solid #e5e7eb; text-align:left; }
+            .admin-brand .title { font-size:1.5rem; font-weight:700; color:#1f2937; margin-bottom:0.25rem; }
+            .admin-brand .sub { font-size:0.875rem; color:#6b7280; font-weight:500; }
+            .admin-menu { list-style:none; padding:1.5rem 1rem; margin:0; display:flex; flex-direction:column; gap:0.5rem; }
+            .admin-menu a { display:flex; align-items:center; padding:0.875rem 1rem; color:#6b7280; text-decoration:none; border-radius:12px; font-weight:500; font-size:0.95rem; transition:all 0.3s ease; }
+            .admin-menu a:hover { background:#f3f4f6; color:#374151; transform:translateX(2px); }
+            .admin-menu a.active { background:#e0e7ff; color:#4f46e5; font-weight:600; }
+            .admin-menu a i { width:20px; margin-right:0.875rem; text-align:center; font-size:1.1rem; color:#4f46e5; }
+            .admin-menu a:not(.active) i { color:#6b7280; }
+            .admin-content { flex:1; margin-left:280px; background:#fff; border:none; border-radius:0; box-shadow:none; transition:all 0.3s ease; }
             .admin-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e7edf4; }
             .admin-topbar .page-title { display:flex; align-items:center; gap:10px; color:#0d141c; font-weight:800; }
             .admin-actions { display:flex; align-items:center; gap:12px; }
@@ -392,7 +394,10 @@
                 <li><a href="#" id="link-users"><i class="fas fa-users"></i> Users</a></li>
                 <li><a href="#" id="link-wallet"><i class="fas fa-wallet"></i> Wallet & Transactions</a></li>
                 <li><a href="#" id="link-withdraw"><i class="fas fa-money-bill-transfer"></i> Withdrawal Requests</a></li>
-                <li><a href="#" onclick="return false;"><i class="fas fa-user-astronaut"></i> Astrologer Management</a></li>
+                <a href="refund-management.html" class="nav-item active">
+                  <i class="fas fa-exchange-alt"></i>
+                  <span class="menu-text">Refund Management</span>
+              </a>
                 <li><a href="#" id="link-reviews"><i class="fas fa-flag"></i> Reviews & Complaints</a></li>
                 <li><a href="admin-settings.html"><i class="fas fa-gear"></i> Settings</a></li>
               </ul>
@@ -1047,10 +1052,13 @@
         <div class="toast-container"></div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- App config (provides window.API_CONFIG.API_URL) -->
+        <script src="js/config.js"></script>
 
         <script>
             // API base and globals
-            const API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'http://localhost:9002/api';
+            // Prefer config from js/config.js -> window.API_CONFIG.API_URL, then window.API_URL, then sensible localhost default
+            const API_URL = 'https://astrologer-platfrom.onrender.com/api';
             let currentAdmin;
             // Sidebar toggle for new layout
             const adminSidebar = document.getElementById('adminSidebar');
