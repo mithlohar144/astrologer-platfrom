@@ -288,21 +288,12 @@
                 </div>
 
                 <div class="payment-methods">
-                    <div class="payment-method" data-method="razorpay">
+                    <div class="payment-method selected" data-method="razorpay">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-credit-card me-3" style="font-size: 22px; color: #556cd6;"></i>
                             <div>
                                 <div class="fw-semibold">Razorpay</div>
                                 <small class="text-muted">Card, UPI, Net Banking</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="payment-method" data-method="mock">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-flask me-3" style="font-size: 22px; color: #28a745;"></i>
-                            <div>
-                                <div class="fw-semibold">Mock Payment</div>
-                                <small class="text-muted">For testing in development</small>
                             </div>
                         </div>
                     </div>
@@ -334,7 +325,7 @@
 
     <script>
         // API base URL fallback (match user-profile)
-        const API_URL = (window.API_CONFIG && window.API_CONFIG.API_URL) ? window.API_CONFIG.API_URL : 'http://localhost:9000/api';
+        const API_URL = 'https://astrologer-platfrom.onrender.com/api';
 
         let selectedAmount = 0;
         let selectedPaymentMethod = 'razorpay';
