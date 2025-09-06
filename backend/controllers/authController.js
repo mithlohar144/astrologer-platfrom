@@ -365,9 +365,79 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// @desc    Admin login with hardcoded credentials
+// @route   POST /api/auth/admin/login
+// @access  Public
+const adminLogin = async (req, res) => {
+  try {
+    console.log('🔐 Admin login attempt:', {
+      email: req.body.email,
+      timestamp: new Date().toISOString()
+    });
+
+    const { email, password } = req.body;
+
+    // Hardcoded admin credentials
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@astro.com';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+
+    // Validate admin credentials
+    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      console.log('❌ Invalid admin credentials');
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid admin credentials'
+      });
+    }
+
+    // Create admin user object
+    const adminUser = {
+      _id: 'admin_user_id',
+      name: 'Admin',
+      email: ADMIN_EMAIL,
+      isAdmin: true,
+      contact: '9999999999',
+      walletBalance: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    // Generate token
+    const token = jwt.sign(
+      { 
+        id: adminUser._id,
+        email: adminUser.email,
+        isAdmin: true 
+      }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    );
+
+    console.log('✅ Admin login successful');
+
+    res.status(200).json({
+      success: true,
+      message: 'Admin login successful',
+      data: {
+        token,
+        user: adminUser
+      }
+    });
+
+  } catch (error) {
+    console.error('💥 Admin login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during admin login',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getMe,
-  updateProfile
+  updateProfile,
+  adminLogin
 };
