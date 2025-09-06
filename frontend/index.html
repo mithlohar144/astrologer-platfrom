@@ -15,6 +15,7 @@
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
     <!-- Calendly link widget end -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <!-- Styles -->
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -84,7 +85,7 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         <h1 class="hero-h1">I have the answer to all your questions, ask me questions</h1>
         <p style="color: whitesmoke;">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The</p>
         <p class="tagline" style="color: whitesmoke;">Explore the Universe of Astrology and Horoscopes</p>
-        <button type="button" class="btn btn-outline-info" style="background-color: black; color:white; "><a style="text-decoration: none; color:white;" href="#" onclick="openCalendly()">Book a Call</a></button>
+        <button type="button" class="btn btn-outline-info" style="background-color: black; color:white; "><a style="text-decoration: none; color:white;" href="https://rzp.io/rzp/0pzymi0" >Book a Call</a></button>
       </div>
       <div class="hero-image-container"> 
         <div class="about-wheel-container">
@@ -108,33 +109,39 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
     
 
 <!-- About Us -->
+<section id="about" class="about-section">
+  <div class="about-header about-text">
+    <h1>About Us</h1>
+    <p>Astro Dr. Kanhaiya, a seasoned astrologer with 7+ years of experience</p>
+  </div>
 
-      <div style="margin-top: 40px;" >
-        <div class="about-text" >
-          <h1 style="font-size: 3rem;">About Us</h1>
-          
-          <p> Astro Dr. Kanhaiya, a seasoned astrologer with 5+ years of experience</p>
+  <div class="about-container">
+    <div class="about-media">
+      <img src="img/210101020235643738.png" alt="Astrologer Image" class="about-photo" />
+    </div>
+    <div class="about-content about-description">
+      <h2>Who I Am?</h2>
+      <p>
+        Astro Dr. Kanhaiya is a distinguished Vedic astrologer specializing in Prashna Kundali, a precise and insightful method that provides accurate guidance—even for those without birth details. With over 5 years of experience in astrology and more than a decade as a college professor, he merges academic wisdom with astrological depth to help individuals navigate life’s challenges.
+      </p>
+
+      <div class="about-metrics">
+        <div class="about-metric">
+          <div class="about-metric-value">7+</div>
+          <div class="about-metric-label">Years Experience</div>
         </div>
-        
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; max-width: 1200px; margin: 0 auto; ">
-          <div class="about-img">
-            <img src="img/210101020235643738.png" alt="Astrologer Image" class="about-image">
-          </div>
-          <div class="about-description">
-            <h1>Who I Am ?</h1>
-            <p> Astro Dr. Kanhaiya is a distinguished Vedic astrologer specializing in Prashna Kundali, a precise and insightful method that provides accurate 
-              guidance—even for those without birth details. With over 5 years of experience in astrology and more than a decade as a college professor,
-               he merges academic wisdom with astrological depth to help individuals navigate life’s challenges.</p>
-               <div style="display: flex; ">
-                <div><i class="fa-solid fa-7 " style="color: #0a0a09; font-size:50px;padding: 10px;"></i></div>
-                <div>
-                <span>years of <br> experience  </span>
-               </div>
-               </div>
-              
-          </div>
+        <div class="about-metric">
+          <div class="about-metric-value">1K+</div>
+          <div class="about-metric-label">Consultations</div>
+        </div>
+        <div class="about-metric">
+          <div class="about-metric-value">98%</div>
+          <div class="about-metric-label">Happy Clients</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
   
          <!-- why we choice-->
          <section class="why-choose-us">
@@ -169,109 +176,75 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
   </div>
 </section>  
 
-       <!--offer-->
-       <div >
-        <div class="offer-head-text" style="text-align: center; padding: 20px;margin-top: 30px;">
-          <h1>Astrological Proficiencies</h1>
-          <p>Skilled in delivering personalized guidance through proven astrological methods like Prashna Kundli and Vastu.</p>
+       <!-- Astrological Proficiencies -->
+       <section class="proficiencies-section">
+         <div class="proficiencies-header">
+           <h2>Astrological Proficiencies</h2>
+           <p>Skilled in delivering personalized guidance through proven astrological methods like Prashna Kundli and Vastu.</p>
+         </div>
+
+         <div class="proficiencies-grid">
+           <div class="proficiencies-media">
+             <div class="proficiencies-wheel">
+               <img src="img/astrology-wheel-.webp" alt="Astrology Wheel" />
+             </div>
+           </div>
+
+           <div class="proficiencies-cards">
+             <article class="proficiency-card">
+               <img src="img/image.png" alt="Prashna-Kundali" class="proficiency-icon" />
+               <h3>Prashna-Kundali</h3>
+               <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
+             </article>
+           </div>
+         </div>
+       </section>
+
+      <!-- Services -->
+      <section id="service" class="services-section">
+        <div class="services-header">
+          <h2>Services</h2>
+          <p>We offer a wide range of astrological services to help you navigate life's challenges and make informed decisions.</p>
         </div>
 
-    <div style=" display: flex; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; gap: 60px;">
-  
-  <!-- Left Side: Image -->
-  <div class="offer-img" style="border-radius: 50%; width: 400px; height: 400px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;">
-    <img src="img/astrology-wheel-.webp" alt="" style="width: 100%; height: auto; border-radius: 50%;">
-  </div>
-  
-  <!-- Right Side: Cards -->
-  <div class="offer-card" style="flex: 1; display: flex; flex-direction: row; gap: 20px;">
-    
-    <div class="kundli" style="background-color: #e6edb4; padding: 25px; border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-left: 40%;">
-      <img src="img/image.png" alt="">
-      <h1 style="margin: 0 0 10px;">Prashna-Kundali</h1>
-      <p style="margin: 0;">Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-    </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <img src="icon/care.gif" alt="Health Guidance" class="service-card-icon" />
+            <h3>Health Guidance</h3>
+            <p>Holistic insights to support your well-being and life balance through astrological wisdom.</p>
+          </article>
 
-    <!-- <div class="vastu" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
-      <img src="" alt="">
-      <h1 style="margin: 0 0 10px;">Finance Consultant</h1>
-      <p style="margin: 0;">Finance Consultant — offering tailored astrological insights to help navigate financial decisions, investments, and prosperity planning.</p>
-    </div> -->
-    
-  </div>
-</div>
-       </div>
+          <article class="service-card">
+            <img src="icon/graduate.gif" alt="Career Consultant" class="service-card-icon" />
+            <h3>Career Consultant</h3>
+            <p>Clarify your career path, opportunities, and timing with customized astrological analysis.</p>
+          </article>
 
-      <!-- Service-->
+          <article class="service-card">
+            <img src="icon/home-care.gif" alt="Vastu & Home" class="service-card-icon" />
+            <h3>Vastu & Home</h3>
+            <p>Practical Vastu-aligned guidance to enhance harmony and energy within your space.</p>
+          </article>
 
-    <section class="service"  style="background-color: rgb(220, 250, 240);" >
-       <div >
-            <div class="service-text" style="text-align: center; padding: 10px;margin-top: 30px; margin-bottom:30px;">
-                <h1>Services</h1>
-                
-                <p>We offer a wide range of astrological services to help you navigate life's challenges and make informed decisions.</p>
-            </div>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center;  gap: 60px; ">
-                <div class="service-divv">
-                <div class="service-icon">
-                    <img src="icon/care.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
-                
-                <div class="service-divv">
-                <div class="service-icon">
-                    <img src="icon/graduate.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
+          <article class="service-card">
+            <img src="icon/marriage.gif" alt="Marriage Consultant" class="service-card-icon" />
+            <h3>Marriage Consultant</h3>
+            <p>Relationship compatibility and marriage timing to foster long-lasting bonds.</p>
+          </article>
 
-                <div class="service-divv">
-                <div class="service-icon">
-                    <img src="icon/home-care.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
+          <article class="service-card">
+            <img src="icon/graduate (1).gif" alt="Education Guidance" class="service-card-icon" />
+            <h3>Education Guidance</h3>
+            <p>Choose subjects and higher studies aligned with your innate strengths and cycles.</p>
+          </article>
 
-            </div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center;  gap: 60px; ">
-                <div class="service-divv" style="margin-top: 80px;">
-                <div class="service-icon">
-                    <img src="icon/marriage.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
-
-                <div class="service-divv" style="margin-top: 80px;">
-                <div class="service-icon">
-                    <img src="icon/graduate (1).gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
-
-                <div class="service-divv" style="margin-top: 80px;">
-                <div class="service-icon">
-                    <img src="icon/dollar.gif" alt="Prashna-Kundali Icon" style="width: 100px; height: 100px;">
-                </div>
-                <div class="service-text" >
-                    <h1>Prashna-Kundali</h1>
-                    <p>Expert in Prashna Kundli—a precise and trusted astrological technique for guiding life decisions even without birth details.</p>
-                </div></div>
-
-            </div>
+          <article class="service-card">
+            <img src="icon/dollar.gif" alt="Finance Consultant" class="service-card-icon" />
+            <h3>Finance Consultant</h3>
+            <p>Plan investments and financial decisions using favorable astrological periods.</p>
+          </article>
         </div>
-    </section>
+      </section>
 
         
         
@@ -370,6 +343,55 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
                 </div>
             </div>
         </section>
+        <script>
+          (function () {
+            const track = document.getElementById('testimonialsTrack');
+            if (!track) return;
+
+            let cardWidth = track.querySelector('.testimonial-card')?.offsetWidth || 300;
+            let gap = parseInt(getComputedStyle(track).gap || '20', 10) || 20;
+            let step = cardWidth + gap;
+            let timer = null;
+
+            function start() {
+              if (timer) return;
+              timer = setInterval(() => {
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                const nearEnd = track.scrollLeft >= maxScroll - 5;
+                if (nearEnd) {
+                  track.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                  track.scrollBy({ left: step, behavior: 'smooth' });
+                }
+              }, 3000);
+            }
+
+            function stop() {
+              if (timer) {
+                clearInterval(timer);
+                timer = null;
+              }
+            }
+
+            // Pause on hover / touch
+            track.addEventListener('mouseenter', stop);
+            track.addEventListener('mouseleave', start);
+            track.addEventListener('touchstart', stop, { passive: true });
+            track.addEventListener('touchend', start, { passive: true });
+
+            // Recalculate on resize (in case cards wrap differently)
+            window.addEventListener('resize', () => {
+              const firstCard = track.querySelector('.testimonial-card');
+              if (firstCard) {
+                cardWidth = firstCard.offsetWidth;
+              }
+              gap = parseInt(getComputedStyle(track).gap || '20', 10) || gap;
+              step = cardWidth + gap;
+            });
+
+            start();
+          })();
+        </script>
 
         <!-- <section id="statistics">
             <div class="stats-container">
@@ -397,138 +419,56 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         </section> -->
 
 
-        <!-- testimonal-->
-
-
-        <section style="background-color: #1c0241;">
-            <div class="testimonial-container">
-                <div class="testimonial-slider" style="display: flex; gap: 30px; overflow-x: auto; padding: 20px; scrollbar-width: none;">
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="/frontend/img/aquarius.png" alt="User 1">
-                        <h3>John Doe</h3>
-                        <p>"This is an amazing product! I highly recommend it."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 2">
-                        <h3>Jane Smith</h3>
-                        <p>"I've seen a significant improvement since using this service."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 3">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 4">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 5">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 6">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 7">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 8">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 9">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 10">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 11">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 12">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                    <div class="testimonial" style="background: white; border-radius: 15px; padding: 25px; min-width: 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <img src="https://via.placeholder.com/100" alt="User 13">
-                        <h3>Peter Jones</h3>
-                        <p>"Great customer support and fast delivery."</p>
-                    </div>
-                </div>
-                
-                <!-- <div class="controls">
-                    <button id="prevBtn">&lt;</button>
-                    <button id="nextBtn">&gt;</button>
-                </div> -->
-            </div>
+        <!-- Testimonial -->
+        <section class="testimonials-section">
+          <div class="testimonials-header">
+            <h2>What Clients Say</h2>
+            <p>Real experiences and feedback from those who’ve consulted with us.</p>
+          </div>
+          <div id="testimonialsTrack" class="testimonials-track" aria-label="Testimonials">
+            <article class="testimonial-card">
+              <img src="/frontend/img/aquarius.png" alt="User avatar" class="testimonial-avatar" />
+              <h3>John Doe</h3>
+              <p>"This is an amazing service! Highly recommended."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Jane Smith</h3>
+              <p>"I've seen a significant improvement since the consultation."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Peter Jones</h3>
+              <p>"Clear insights and very supportive guidance."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Anita Verma</h3>
+              <p>"Accurate predictions and practical remedies that helped me a lot."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Rohan Mehta</h3>
+              <p>"Very insightful consultation. The guidance gave me clarity and peace of mind."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Sneha Kapoor</h3>
+              <p>"The remedies were simple and effective. I noticed positive changes quickly."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Arjun Singh</h3>
+              <p>"Professional and accurate. The timing suggestions worked perfectly for me."</p>
+            </article>
+            <article class="testimonial-card">
+              <img src="https://via.placeholder.com/100" alt="User avatar" class="testimonial-avatar" />
+              <h3>Priya Nair</h3>
+              <p>"Kind, patient, and very knowledgeable. Highly recommend their services!"</p>
+            </article>
+          </div>
         </section>
-    <!-- Appointment Booking Section -->
-    <section id="appointment" style="padding: 80px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-            <div class="appointment-card" style="background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 50px; margin-top: -30px; position: relative; z-index: 3; color: #2c3e50;">
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h2 style="font-weight: bold; margin-bottom: 15px; color: #2c3e50;">Book Your Astrology Session</h2>
-                    <p style="color: #6c757d; margin: 0;">Fill out the form below and our expert astrologers will get back to you</p>
-                </div>
-                
-                <form id="appointmentForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="fullName" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Full Name *</label>
-                        <input type="text" id="fullName" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
-                    </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="email" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Email Address *</label>
-                        <input type="email" id="email" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
-                    </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="phone" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Phone Number *</label>
-                        <input type="tel" id="phone" pattern="[0-9]{10}" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
-                    </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="sessionType" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Session Type *</label>
-                        <select id="sessionType" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease; background: white;">
-                            <option value="">Select Session Type</option>
-                            <option value="call">Phone Call Session</option>
-                            <option value="chat">Chat Session</option>
-                        </select>
-                    </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="preferredDate" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Preferred Date *</label>
-                        <input type="date" id="preferredDate" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
-                    </div>
-                    <div style="display: flex; flex-direction: column;">
-                        <label for="preferredTime" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Preferred Time *</label>
-                        <input type="time" id="preferredTime" required style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease;">
-                    </div>
-                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
-                        <label for="message" style="margin-bottom: 8px; font-weight: 500; color: #2c3e50;">Message (Optional)</label>
-                        <textarea id="message" rows="4" placeholder="Tell us about your concerns or questions..." style="padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; transition: all 0.3s ease; resize: vertical;"></textarea>
-                    </div>
-                    <div style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
-                        <button type="submit" style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; padding: 15px 40px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                            <span class="spinner-border spinner-border-sm" style="display: none; margin-right: 10px;" role="status"></span>
-                            <i class="fas fa-calendar-check" style="margin-right: 10px;"></i>
-                            Book Appointment
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
+        
        
     <!-- Footer Section -->
     <footer class="footer-section">
@@ -593,7 +533,7 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         <i class="fas fa-arrow-up"></i>
     </div>
     <!-- Floating Call button -->
-    <button  href="#x" onclick="openCalendly()"
+    <button  href="#" onclick="startPayment()"
             
             style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; border: none; border-radius: 50px; padding: 12px 16px; background: #dc3545; color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.25); display: flex; align-items: center; gap: 8px;">
         <i class="fas fa-phone"></i>
@@ -710,7 +650,7 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
         btnText.style.display = 'none';
         
         try {
-            const response = await fetch('http://localhost:9000/api/appointments', {
+            const response = await fetch('https://astrologer-platfrom.onrender.com/api/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -856,6 +796,26 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(3, 3, 66, 1) 35%, 
             window.open('https://calendly.com/bitvallysoftwere/new-meeting?background_color=f0efef', '_blank', 'noopener');
             return false;
         }
+
+      function startPayment() {
+      var options = {
+        "key": "rzp_test_9cELLSZvfgmV3d",   // ⚡ apna Razorpay Key ID daalo
+        "amount": 10000,               // paisa me (₹499 = 49900)
+        "currency": "INR",
+        "name": "ASTRO DR. KANHAIYA",
+        "description": "Secure payment for your life consultation",
+        "handler": function (response){
+            setTimeout(function(){
+                window.location.href = "https://calendly.com/bitvallysoftwere/new-meeting?background_color=f0efef"; 
+            }, 1000); // 1 sec delay
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
 </script>
 </body>
 </html>
