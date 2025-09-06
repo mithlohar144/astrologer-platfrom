@@ -330,7 +330,7 @@
                 <ul class="menu">
                     <li><a class="active" href="#" onclick="return false;"><i class="fas fa-home"></i>Home</a></li>
                     <li><a href="wallet-recharge.html"><i class="fas fa-wallet"></i>Wallet</a></li>
-                    <li><a href="#" onclick="openCalendly()"><i class="fas fa-phone"></i>Request for Callback</a></li>
+                    <li><a href="https://rzp.io/rzp/0pzymi0" onclick=""><i class="fas fa-phone"></i>Request for Callback</a></li>
                     <li><a href="appointments.html"><i class="fas fa-calendar-alt"></i>Appointments</a></li>
                     <!-- <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li> -->
                     <li><a href="#" onclick="startEditProfile(); return false;"><i class="fas fa-cog"></i>Settings/Profile</a></li>
@@ -503,7 +503,7 @@
                     <div class="muted mb-2" style="font-weight:700; color:#22314a;">Quick Actions</div>
                     <div class="quick-actions d-flex gap-2">
                         
-                        <button type="button" class="btn btn-primary" onclick="openCalendly()" aria-label="Request for Callback via Calendly"><i class="fas fa-phone me-2"></i>Request for Callback</button>
+                        <button type="button" class="btn btn-primary" onclick="requestPayment()" aria-label="Request for Callback via Calendly"><i class="fas fa-phone me-2"></i>Request for Callback</button>
                         <button class="btn btn-outline-primary" onclick="startEditProfile()"><i class="fas fa-user-cog me-2"></i>Edit Profile</button>
                     </div>
                 </section>
@@ -823,15 +823,8 @@
         }
 
         // Calendly popup trigger
-        function openCalendly() {
-            const url = 'https://calendly.com/bitvallysoftwere/new-meeting';
-            if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
-                Calendly.initPopupWidget({ url });
-                return false;
-            }
-            // Fallback: open in new tab if widget not loaded yet
-            window.open(url, '_blank', 'noopener');
-            return false;
+        function requestPayment() {
+            window.location.href = 'https://rzp.io/rzp/0pzymi0';
         }
     </script>
 </body>
