@@ -230,7 +230,12 @@
         @media (max-width: 992px) { .stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
         /* Off-canvas behavior */
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(17,24,39,0.35); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 1040; }
-        .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+        /* Do not block clicks when overlay is visually hidden */
+        .sidebar-overlay.show { opacity: 0; pointer-events: none; }
+        /* On mobile/tablet, make overlay visible and clickable */
+        @media (max-width: 991.98px) {
+            .sidebar-overlay.show { opacity: 0; pointer-events: none; }
+        }
         .menu-btn { border: 1px solid #e6ecf6; background:#fff; border-radius: 10px; padding:8px 12px; color:#22314a; box-shadow:0 6px 14px rgba(31,45,61,0.06); }
         .menu-btn:focus { outline: 2px solid #99a7ff; outline-offset: 2px; }
         @media (max-width: 768px) {
@@ -323,12 +328,12 @@
                     </div>
                 </div>
                 <ul class="menu">
-                    <li><a class="active" href="#" onclick="return false;"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="wallet-recharge.html"><i class="fas fa-wallet"></i> Wallet</a></li>
-                    <li><a href="#" onclick="openCalendly()"><i class="fas fa-phone"></i> Request for Callback</a></li>
-                    <li><a href="appointments.html"><i class="fas fa-calendar-alt"></i> Appointments</a></li>
+                    <li><a class="active" href="#" onclick="return false;"><i class="fas fa-home"></i>Home</a></li>
+                    <li><a href="wallet-recharge.html"><i class="fas fa-wallet"></i>Wallet</a></li>
+                    <li><a href="#" onclick="openCalendly()"><i class="fas fa-phone"></i>Request for Callback</a></li>
+                    <li><a href="appointments.html"><i class="fas fa-calendar-alt"></i>Appointments</a></li>
                     <!-- <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li> -->
-                    <li><a href="#" onclick="startEditProfile(); return false;"><i class="fas fa-cog"></i> Settings/Profile</a></li>
+                    <li><a href="#" onclick="startEditProfile(); return false;"><i class="fas fa-cog"></i>Settings/Profile</a></li>
                 </ul>
             </aside>
             <main class="dashboard-content" id="main-content">
@@ -497,7 +502,6 @@
                 <section class="mb-3">
                     <div class="muted mb-2" style="font-weight:700; color:#22314a;">Quick Actions</div>
                     <div class="quick-actions d-flex gap-2">
-                    
                         
                         <button type="button" class="btn btn-primary" onclick="openCalendly()" aria-label="Request for Callback via Calendly"><i class="fas fa-phone me-2"></i>Request for Callback</button>
                         <button class="btn btn-outline-primary" onclick="startEditProfile()"><i class="fas fa-user-cog me-2"></i>Edit Profile</button>
