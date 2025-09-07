@@ -2,8 +2,9 @@
 const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const CONFIG = {
   API_URL: isLocalHost
-    ? 'http://localhost:9000/api'
-    : 'https://astrologer-platfrom.onrender.com/api',
+    ? 'https://astrologer-platfrom.onrender.com/api'
+    : 'http://localhost:9000/api',
+
 
   // Session timeout in minutes
   SESSION_TIMEOUT: 30,
