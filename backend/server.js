@@ -121,16 +121,6 @@ app.use('*', (req, res) => {
   });
 });
 
-const maintenanceMode = true;
-
-app.use((req, res, next) => {
-  const isAdmin = req.headers['x-admin'] === 'true'; // ya cookie/session check
-  if (maintenanceMode && !isAdmin) {
-    return res.sendFile(__dirname + '/maintenance.html');
-  }
-  next();
-});
-
 // Global error handler
 app.use((error, req, res, next) => {
   console.error('Global error handler:', error);
