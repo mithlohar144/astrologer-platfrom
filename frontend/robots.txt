@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /user-profile.html
+Disallow: /wallet-recharge.html
+Disallow: /appointments.html
+Disallow: /admin-dashboard.html
+Sitemap: https://astrodrkanhaiya.in/sitemap.xml
