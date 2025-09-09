@@ -27,7 +27,7 @@ app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = [
-  'http://localhost:3000',
+  'https://astrodrkanhaiya.in/',
   'http://127.0.0.1:3000',
   'http://localhost:8000',
   'http://127.0.0.1:8080',
@@ -35,8 +35,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5500',
   process.env.FRONTEND_URL,
   // Add your Vercel domain here when deployed
-  'https://astrologer-platfrom-1.onrender.com',
-  'https://astrodrkanhaiya.in/'
+  'https://astrologer-platfrom-1.onrender.com'
 ].filter(Boolean);
 
 app.use(cors({
