@@ -8,19 +8,7 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- About Page -->
-  <url>
-    <loc>https://astrodrkanhaiya.in/#about</loc>
-    <lastmod>2025-09-09</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Services Page -->
-  <url>
-    <loc>https://astrodrkanhaiya.in/#service</loc>
-    <lastmod>2025-09-09</lastmod>
-    <priority>0.8</priority>
-  </url>
+  
 
   <!-- Contact Page -->
   <url>
